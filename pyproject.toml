@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+[project]
+name = "PyDevDTK"
+version = "0.0.1"
+authors = [
+    { name="Bojan Sofronievski", email="bojan.drago@gmail.com" },
+]
+description = "Python device development toolkit"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy>=1.23.3",
+    "matplotlib>=3.5.2"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/BojanSof/pydevdtk"
+"Bug Tracker" = "https://github.com/BojanSof/pydevdtk/issues"
+
+[tool.black]
+line-length = 79
+
+[tool.isort]
+profile = "black"

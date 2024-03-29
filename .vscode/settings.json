@@ -1,0 +1,10 @@
+{
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
+  },
+  "flake8.args": ["--config=.flake8"],
+  "autoDocstring.docstringFormat": "numpy",
+  "python.terminal.executeInFileDir": true,
+  "jupyter.interactiveWindow.textEditor.executeSelection": true
+}
