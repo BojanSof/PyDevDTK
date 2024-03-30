@@ -82,17 +82,22 @@ def main():
     plotter_manager.create_axis("ax_line4", "fig_demo", 2, 4, 1, 2)
     plotter_manager.create_axis("ax_img", "fig_demo", 0, 4, 2, 2)
 
-    plotter_manager.create_line_plot("line1", "ax_line1", 50)
-    plotter_manager.create_line_plot("line2", "ax_line2", 50)
+    plotter_manager.create_line_plot("line1", "ax_line1", num_samples)
+    plotter_manager.create_line_plot("line2", "ax_line2", num_samples)
     plotter_manager.create_bar_plot("bar", "ax_bar", 2)
-    plotter_manager.create_line_plot("line3_1", "ax_line3", 50, label="sin")
-    plotter_manager.create_line_plot("line3_2", "ax_line3", 50, label="cos")
-    plotter_manager.create_scatter_plot("scat", "ax_scat", 10)
-    plotter_manager.create_line_plot("line4", "ax_line4", 50)
+    plotter_manager.create_line_plot(
+        "line3_1", "ax_line3", num_samples, label="sin"
+    )
+    plotter_manager.create_line_plot(
+        "line3_2", "ax_line3", num_samples, label="cos"
+    )
+    plotter_manager.create_scatter_plot("scat", "ax_scat", num_samples // 5)
+    plotter_manager.create_line_plot("line4", "ax_line4", num_samples)
     plotter_manager.create_image_plot(
         "img",
         "ax_img",
         (n_fft // 2 + 1, num_samples // n_spec_update),
+        cbar=True,
         vmin=0,
         vmax=1,
         aspect="auto",
@@ -100,10 +105,18 @@ def main():
     )
 
     plotter_manager.modify_axis(
-        "ax_line1", [0, 50], [-1.1, 1.1], ylabel="Sine", yticks=[-1, 0, 1]
+        "ax_line1",
+        [0, num_samples - 1],
+        [-1.1, 1.1],
+        ylabel="Sine",
+        yticks=[-1, 0, 1],
     )
     plotter_manager.modify_axis(
-        "ax_line2", [0, 50], [-1.1, 1.1], ylabel="Cosine", yticks=[-1, 0, 1]
+        "ax_line2",
+        [0, num_samples - 1],
+        [-1.1, 1.1],
+        ylabel="Cosine",
+        yticks=[-1, 0, 1],
     )
     plotter_manager.modify_axis(
         "ax_bar",
@@ -122,16 +135,20 @@ def main():
     )
     plotter_manager.modify_axis(
         "ax_line3",
-        [0, 50],
+        [0, num_samples - 1],
         [-1.1, 1.1],
         xlabel="SinCos",
         yticks=[-1, 0, 1],
         legend=True,
     )
     plotter_manager.modify_axis(
-        "ax_line4", [0, 50], [-1.1, 1.1], xlabel="Chirp", yticks=[-1, 0, 1]
+        "ax_line4",
+        [0, num_samples - 1],
+        [-1.1, 1.1],
+        xlabel="Chirp",
+        yticks=[-1, 0, 1],
     )
-    plotter_manager.modify_axis("ax_img", [0, 50], [0, 25])
+    plotter_manager.modify_axis("ax_img", [0, num_samples - 1], [0, 25])
 
     plotter_manager.show()
     while plotter_manager.is_shown():

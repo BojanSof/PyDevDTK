@@ -108,8 +108,11 @@ class Plotter:
                 artist_id = cmd[1]
                 ax_id = cmd[2]
                 img_shape = cmd[3]
-                kwargs = cmd[4]
-                self.create_image_plot(artist_id, ax_id, img_shape, **kwargs)
+                cbar = cmd[4]
+                kwargs = cmd[5]
+                self.create_image_plot(
+                    artist_id, ax_id, img_shape, cbar, **kwargs
+                )
 
     def process_data_queue(self):
         while not self.data_queue.empty():
@@ -202,7 +205,7 @@ class Plotter:
         if yticks is not None:
             ax.set_yticks(yticks, yticklabels)
         if legend:
-            ax.legend()
+            ax.legend(loc="upper left")
 
     def create_line_plot(self, artist_id, ax_id, size, **kwargs):
         ax = self.axs[ax_id]
@@ -225,9 +228,11 @@ class Plotter:
         )
         self.add_artist(artist_id, ax_id, bars, PlotType.Bar)
 
-    def create_image_plot(self, artist_id, ax_id, img_shape, **kwargs):
+    def create_image_plot(self, artist_id, ax_id, img_shape, cbar, **kwargs):
         ax = self.axs[ax_id]
         img = ax.imshow(np.full(img_shape, np.nan), **kwargs)
+        if cbar:
+            plt.colorbar(img, ax=ax)
         self.add_artist(artist_id, ax_id, img, PlotType.Image)
 
     def add_artist(self, artist_id, ax_id, artist, type):

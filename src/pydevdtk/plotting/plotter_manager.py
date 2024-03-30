@@ -117,7 +117,9 @@ class PlotterManager:
             ("create_bar_plot", artist_id, axis_id, num_bars, kwargs)
         )
 
-    def create_image_plot(self, artist_id, axis_id, img_shape, **kwargs):
+    def create_image_plot(
+        self, artist_id, axis_id, img_shape, cbar=False, **kwargs
+    ):
         self.cmd_queue.put(
-            ("create_image_plot", artist_id, axis_id, img_shape, kwargs)
+            ("create_image_plot", artist_id, axis_id, img_shape, cbar, kwargs)
         )
