@@ -1,4 +1,0 @@
--r build.txt
--r dev.txt
--r doc.txt
--r test.txt
