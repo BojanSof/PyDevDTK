@@ -2,10 +2,11 @@ import multiprocessing as mp
 import warnings
 
 from .plotter import Plotter
+from .plotter_base import Plotter as PlotterBase
 
 
 class PlotterManager:
-    def __init__(self, plotter: Plotter, fps: int | None = None):
+    def __init__(self, plotter: Plotter | PlotterBase, fps: int | None = None):
         self.cmd_queue = mp.Queue()
         self.data_queue = mp.Queue()
         self.stop_event = mp.Event()
