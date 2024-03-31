@@ -1,4 +1,8 @@
-# Python Device Development Kit (PyDevDTK)
+<p align="center">
+<picture>
+<img src="images/icon.png" height="128">
+</picture>
+</p>
 
 Python package that provides basic tools for device development, including:
 - Communication protocols:
@@ -20,3 +24,7 @@ The wheel package can be found under `dist` folder.
 ## Installing wheel package
 
 Wheel package can be installed by calling `pip install <package.whl>`.
+
+## Examples
+
+Examples can be found under `examples` folder.
