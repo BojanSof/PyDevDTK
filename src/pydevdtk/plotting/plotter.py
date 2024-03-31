@@ -1,4 +1,5 @@
 import enum
+import time
 
 import matplotlib.collections
 import matplotlib.container
@@ -18,7 +19,9 @@ class PlotType(enum.Enum):
 
 
 class Plotter:
-    def __call__(self, cmd_queue, data_queue, stop_event, plot_closed_event):
+    def __call__(
+        self, cmd_queue, data_queue, stop_event, plot_closed_event, fps=None
+    ):
         self.cmd_queue = cmd_queue
         self.data_queue = data_queue
         self.stop_event = stop_event
@@ -28,11 +31,16 @@ class Plotter:
         self.artists = {}
         self.bgs = {}
         self.event_processing = False
+        t_start = time.time()
         while not self.stop_event.is_set():
             self.process_cmd_queue()
             self.process_data_queue()
             self.process_events()
+            if fps is not None and time.time() - t_start < 1 / fps:
+                continue
             self.update_figures()
+            t_start = time.time()
+
         while self.cmd_queue.get() is not None:
             self.cmd_queue.get()
         while self.data_queue.get() is not None:

@@ -5,7 +5,7 @@ from .plotter import Plotter
 
 
 class PlotterManager:
-    def __init__(self, plotter: Plotter):
+    def __init__(self, plotter: Plotter, fps: int | None = None):
         self.cmd_queue = mp.Queue()
         self.data_queue = mp.Queue()
         self.stop_event = mp.Event()
@@ -18,6 +18,7 @@ class PlotterManager:
                 self.data_queue,
                 self.stop_event,
                 self.is_plot_closed,
+                fps,
             ),
         )
         self.process.start()
