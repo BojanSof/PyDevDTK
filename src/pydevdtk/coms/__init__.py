@@ -1,1 +1,4 @@
-__all__ = []
+from .serial import Serial
+
+
+__all__ = ["Serial"]
