@@ -24,9 +24,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showguides="false"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="34.648232"
-     inkscape:cy="576.29202"
+     inkscape:zoom="1"
+     inkscape:cx="280.5"
+     inkscape:cy="589.5"
      inkscape:window-width="2560"
      inkscape:window-height="1334"
      inkscape:window-x="-11"
@@ -70,7 +70,10 @@
      inkscape:groupmode="layer"
      id="layer1"><g
        id="g52"
-       transform="translate(4.8649216)"><rect
+       transform="translate(4.8649216)"
+       inkscape:export-filename="icon.png"
+       inkscape:export-xdpi="94.679573"
+       inkscape:export-ydpi="94.679573"><rect
          style="fill:#185a8b;fill-opacity:1;stroke:#193143;stroke-width:1.429;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
          id="rect1"
          width="135.92693"
