@@ -6,4 +6,3 @@ exclude =
     build,
     dist
 extend-ignore = E203
-max-complexity = 10
