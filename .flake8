@@ -5,7 +5,5 @@ exclude =
     __pycache__,
     build,
     dist
-extend-ignore = [
-    E203
-]
+extend-ignore = E203
 max-complexity = 10

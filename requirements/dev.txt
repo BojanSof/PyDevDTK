@@ -1,3 +1,6 @@
 -r build.txt
 -r default.txt
 -r doc.txt
+
+flake8>=6.0.0
+black>=23.1.0
