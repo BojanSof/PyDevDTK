@@ -33,9 +33,9 @@ if port not in com_ports:
 
 ser.open(port)
 
+parser = Parser()
 t_run = 10
 t_start = time.time()
-parser = Parser()
 while time.time() - t_start < t_run:
     for sin, cos in parser.parse_data(ser.get_data_event()):
         print(f"sin = {sin} | cos = {cos}")
