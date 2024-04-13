@@ -1,4 +1,6 @@
+import sys
 import time
+import queue
 
 from pydevdtk.coms.serial import Serial
 
@@ -31,13 +33,17 @@ port = input("Type in the port to read the data from: ")
 if port not in com_ports:
     print(f"Requested port {port} not found")
 
-ser.open(port)
+data_queue = queue.Queue()
+opened = ser.open(port, lambda data: data_queue.put(data))
+if not opened:
+    print(f"Error while opening port {port}")
+    sys.exit(1)
 
 parser = Parser()
 t_run = 10
 t_start = time.time()
 while time.time() - t_start < t_run:
-    for sin, cos in parser.parse_data(ser.get_data_event()):
+    for sin, cos in parser.parse_data(data_queue.get()):
         print(f"sin = {sin} | cos = {cos}")
 
 ser.close()
