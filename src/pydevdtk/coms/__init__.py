@@ -1,5 +1,5 @@
 from .serial import Serial
-from .ble import Ble, BleStatus
+from .ble import Ble, BleStatus, BleDevice
 
 
-__all__ = ["Serial", "Ble", "BleStatus"]
+__all__ = ["Serial", "Ble", "BleStatus", "BleDevice"]
