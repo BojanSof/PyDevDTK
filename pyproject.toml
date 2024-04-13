@@ -3,13 +3,13 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 [project]
 name = "PyDevDTK"
-version = "0.0.1"
+version = "0.1.0"
 authors = [
     { name="Bojan Sofronievski", email="bojan.drago@gmail.com" },
 ]
 description = "Python device development toolkit"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",

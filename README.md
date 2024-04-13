@@ -1,6 +1,6 @@
 <p align="center">
 <picture>
-<img src="images/icon.png" height="256">
+<img src="https://raw.githubusercontent.com/BojanSof/PyDevDTK/main/images/icon.png" height="256">
 </picture>
 </p>
 
@@ -8,23 +8,43 @@ Python package that provides basic tools for device development, including:
 - Communication protocols:
 	- UART
 	- BLE
-	- TCP/IP
 - Real-time visualizations:
 	- Line plots
 	- Scatter plots
 	- Bar plots
 	- Image plots
+	- *Fully customized figure
 
-## Building the wheel package
+More communication protocols and plots are added iteratively.
 
-To build the wheel package, run `python -m build` from the root of the package project.
-Ensure that `build` package is installed.
-The wheel package can be found under `dist` folder.
+## Installing
 
-## Installing wheel package
+The repository includes github actions which publish the package to PyPI and TestPyPI.
+To install the latest release package, run:
+```
+pip install pydevdtk
+```
 
-Wheel package can be installed by calling `pip install <package.whl>`.
+
+To install the latest development package, which is published on TestPyPI, run:
+```
+pip install --index-url https://test.pypi.org/simple pydevdtk
+```
+
+If you need to install the package locally for development, run the following command in the root of the repository:
+```
+pip install -e .
+```
 
 ## Examples
 
 Examples can be found under `examples` folder.
+
+## Requirements
+
+Requirements can be found under `requirements` directory, which includes:
+
+- `default.txt` - base requirements for the package
+- `build.txt` - requirements for building the package
+- `doc.txt` - requirements for building the documentation (WIP)
+- `dev.txt` - requirements for developing the package, including linters and formaters
