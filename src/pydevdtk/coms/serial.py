@@ -15,7 +15,9 @@ class Serial:
     """
 
     def __init__(self):
-        """Initializes a new instance of the Serial class."""
+        """
+        Initializes a new instance of the Serial class.
+        """
         self.port = None
         self.data_thread_stop_event = threading.Event()
         self.data_thread = None
@@ -28,7 +30,7 @@ class Serial:
 
         Returns
         -------
-        list of str
+        list[str]
             A list of strings representing the device names of all the
             available COM ports.
         """
@@ -42,17 +44,22 @@ class Serial:
         Opens a serial port connection and starts a new thread to continuously
         read data from the port.
 
-        Args:
-            port (str): The name of the serial port to open.
-            on_data (Callable[[bytes], None]): A callback function that will
-            be called whenever new data is received from the serial port.
-            **port_kwargs: Additional keyword arguments to pass to the
-            `serial.Serial` constructor, such as baud_rate, parity, etc.
-            Check the `serial.Serial` documentation for more information.
+        Parameters
+        ----------
+        port : str
+            The name of the serial port to open.
+        on_data : Callable[[bytes], None]
+            A callback function that will be called whenever new data is
+            received from the serial port.
+        **port_kwargs
+            Additional keyword arguments to pass to the `serial.Serial`
+            constructor, such as baud_rate, parity, etc. Check the
+            `serial.Serial` documentation for more information.
 
-        Returns:
-            bool: True if the serial port was successfully opened, False
-            otherwise.
+        Returns
+        -------
+        bool
+            True if the serial port was successfully opened, False otherwise.
         """
         self.port = serial.Serial(port=port, **port_kwargs)
         if not self.port.is_open:
@@ -71,9 +78,10 @@ class Serial:
         """
         Closes the serial port if it is open.
 
-        Returns:
-            bool: True if the serial port was successfully closed, False
-            otherwise.
+        Returns
+        -------
+        bool
+            True if the serial port was successfully closed, False otherwise.
         """
         if self.port is not None:
             self.data_thread_stop_event.set()
@@ -88,8 +96,10 @@ class Serial:
         """
         Checks if the serial port is open.
 
-        Returns:
-            bool: True if the serial port is open, False otherwise.
+        Returns
+        -------
+        bool
+            True if the serial port is open, False otherwise.
         """
         if self.port is not None:
             return self.port.is_open
@@ -100,13 +110,16 @@ class Serial:
         Continuously reads data from the specified serial port until the stop
         event is set or the port is closed.
 
-        Parameters:
-            port (serial.Serial): The serial port to read data from.
-            stop_event (threading.Event): The event used to signal when to
-            stop reading data.
+        Parameters
+        ----------
+        port : serial.Serial
+            The serial port to read data from.
+        stop_event : threading.Event
+            The event used to signal when to stop reading data.
 
-        Returns:
-            None
+        Returns
+        -------
+        None
         """
         while not stop_event.is_set() and port.is_open:
             data = port.read_all()
