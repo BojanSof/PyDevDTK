@@ -26,8 +26,6 @@ class BleDevice:
         rssi: int,
         uuids: list[str],
         manufacturer_data: dict[int, bytes],
-        device_hndl: BLEDevice,
-        client: BleakClient | None = None,
     ):
         """
         Initializes a new instance of the BleDevice class.
@@ -44,19 +42,14 @@ class BleDevice:
             A list of UUIDs associated with the device.
         manufacturer_data : dict of int to bytes
             A dictionary containing manufacturer-specific data.
-        device_hndl : BLEDevice
-            The BLEDevice object representing the device.
-        client : BleakClient or None, optional
-            The BleakClient object representing the client connection.
-            Defaults to None.
         """
         self.name = name
         self.address = address
         self.rssi = rssi
         self.uuids = uuids
         self.manufacturer_data = manufacturer_data
-        self._device_hndl = device_hndl
-        self._client = client
+        self._device_hndl = None
+        self._client = None
 
     def __str__(self) -> str:
         return self.name if self.name is not None else ""
@@ -533,8 +526,8 @@ class Ble:
             rssi=advertisement_data.rssi,
             uuids=advertisement_data.service_uuids,
             manufacturer_data=advertisement_data.manufacturer_data,
-            device_hndl=device,
         )
+        dev._device_hndl = device
         self.found_devices[device.address] = dev
         if self.on_device is not None:
             self.on_device(dev)
