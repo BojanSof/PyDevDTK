@@ -63,6 +63,8 @@ class BleDevice:
 
 
 class BleCharacteristic:
+    """BLE characteristic description"""
+
     def __init__(self, uuid: str, properties: list[str]):
         """
         Initializes a new instance of the BleCharacteristic class.
@@ -80,6 +82,8 @@ class BleCharacteristic:
 
 
 class BleService:
+    """BLE service description"""
+
     def __init__(self, uuid: str, characteristics: list[BleCharacteristic]):
         """
         Initializes a new instance of the BleService class.
@@ -97,6 +101,12 @@ class BleService:
 
 
 class Ble:
+    """
+    A class that allows to utilize the BLE module of the device,
+    including scanning for BLE devices, connecting to BLE devices,
+    and data operations including read, write and notify.
+    """
+
     def __init__(self):
         """
         Initializes a new instance allowing to utilize the BLE module of the
