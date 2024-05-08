@@ -1,9 +1,11 @@
 [build-system]
-requires = ["hatchling"]
 build-backend = "hatchling.build"
+requires = [
+    "hatchling",
+    "hatch-vcs"
+]
 [project]
 name = "PyDevDTK"
-version = "0.1.0"
 authors = [
     { name="Bojan Sofronievski", email="bojan.drago@gmail.com" },
 ]
@@ -15,6 +17,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dynamic = ["version"]
 dependencies = [
     "numpy>=1.23.3",
     "matplotlib>=3.5.2"
@@ -23,6 +26,20 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/BojanSof/pydevdtk"
 "Bug Tracker" = "https://github.com/BojanSof/pydevdtk/issues"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/pydevdtk/version.py"
+
+[tool.hatch.version.raw-options]
+version_scheme="no-guess-dev"
+
+[tool.hatch.build]
+artifacts = [
+  "src/pydevdtk/version.py",
+]
 
 [tool.black]
 line-length = 79
