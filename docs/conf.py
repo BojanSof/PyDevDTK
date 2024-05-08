@@ -25,6 +25,7 @@ extensions = [
     "sphinx.ext.duration",
     "sphinx.ext.viewcode",
     "sphinx.ext.githubpages",
+    "sphinx_multiversion",
     "myst_parser",
 ]
 
