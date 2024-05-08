@@ -9,13 +9,12 @@ Communication protocols:
     - UART
     - BLE
 
-Real-time visualizations:
+Real-time visualizations, which can be fully customized, or use one of the following plots:
 
     - Line plots
     - Scatter plots
     - Bar plots
     - Image plots
-    - *Fully customized figure
 
 More communication protocols and plots are added iteratively.
 
