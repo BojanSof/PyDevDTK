@@ -1,6 +1,6 @@
 .. image:: https://raw.githubusercontent.com/BojanSof/PyDevDTK/main/images/icon.png
     :align: center
-	:width: 256
+    :width: 256
 
 Python package that provides basic tools for device development, including:
 
