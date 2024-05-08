@@ -33,6 +33,9 @@ source = "vcs"
 [tool.hatch.build.hooks.vcs]
 version-file = "src/pydevdtk/version.py"
 
+[tool.hatch.version.raw-options]
+version_scheme="no-guess-dev"
+
 [tool.hatch.build]
 artifacts = [
   "src/pydevdtk/version.py",
