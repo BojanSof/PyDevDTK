@@ -25,7 +25,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.githubpages",
     "sphinx_multiversion",
-    "myst_parser",
+    "sphinx.ext.napoleon",
 ]
 
 autodoc_mock_imports = ["serial", "bleak", "numpy", "matplotlib"]
