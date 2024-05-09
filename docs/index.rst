@@ -10,4 +10,4 @@
    :caption: API Documentation
    
    coms
-   plots
+   plotting
