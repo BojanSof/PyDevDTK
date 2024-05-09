@@ -7,6 +7,7 @@
 
 .. toctree::
    :maxdepth: 2
-   :caption: Documentation:
-
-   api
+   :caption: API Documentation
+   
+   coms
+   plots
