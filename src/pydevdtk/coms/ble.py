@@ -17,7 +17,35 @@ class BleStatus(enum.Enum):
 
 
 class BleDevice:
-    """BLE device advertisement data and connection related objects"""
+    """
+    BLE device advertisement data and connection related objects.
+
+    Parameters
+    ----------
+    name : str or None
+        The name of the device. Can be None.
+    address : str
+        The address of the device.
+    rssi : int
+        The received signal strength indicator (RSSI) of the device.
+    uuids : list of str
+        A list of UUIDs associated with the device.
+    manufacturer_data : dict of int to bytes
+        A dictionary containing manufacturer-specific data.
+
+    Attributes
+    ----------
+    name : str or None
+        The name of the device. Can be None.
+    address : str
+        The address of the device.
+    rssi : int
+        The received signal strength indicator (RSSI) of the device.
+    uuids : list of str
+        A list of UUIDs associated with the device.
+    manufacturer_data : dict of int to bytes
+        A dictionary containing manufacturer-specific data.
+    """
 
     def __init__(
         self,
@@ -27,22 +55,6 @@ class BleDevice:
         uuids: list[str],
         manufacturer_data: dict[int, bytes],
     ):
-        """
-        Initializes a new instance of the BleDevice class.
-
-        Parameters
-        ----------
-        name : str or None
-            The name of the device. Can be None.
-        address : str
-            The address of the device.
-        rssi : int
-            The received signal strength indicator (RSSI) of the device.
-        uuids : list of str
-            A list of UUIDs associated with the device.
-        manufacturer_data : dict of int to bytes
-            A dictionary containing manufacturer-specific data.
-        """
         self.name = name
         self.address = address
         self.rssi = rssi
@@ -56,39 +68,53 @@ class BleDevice:
 
 
 class BleCharacteristic:
-    """BLE characteristic description"""
+    """
+    BLE characteristic description.
+
+    Parameters
+    ----------
+    uuid : str
+        The UUID of the characteristic.
+    properties : list of str
+        The properties of the characteristic. It can be a list of one or more
+        strings, which can be 'read', 'write', 'write-without-response',
+        'notify' or 'indicate'.
+
+    Attributes
+    ----------
+    uuid : str
+        The UUID of the characteristic.
+    properties : list of str
+        The properties of the characteristic.
+    """
 
     def __init__(self, uuid: str, properties: list[str]):
-        """
-        Initializes a new instance of the BleCharacteristic class.
-
-        Parameters
-        ----------
-        uuid : str
-            The UUID of the characteristic.
-        properties : list of str
-            The properties of the characteristic, which can be one or more of:
-            'read', 'write', 'write-without-response', 'notify' or 'indicate'.
-        """
         self.uuid = uuid
         self.properties = properties
 
 
 class BleService:
-    """BLE service description"""
+    """
+    BLE service description.
+
+    Parameters
+    ----------
+    uuid : str
+        The UUID of the service.
+    characteristics : List[BleCharacteristic]
+        A list of BleCharacteristic objects representing the
+        characteristics of the service.
+
+    Attributes
+    ----------
+    uuid : str
+        The UUID of the service.
+    characteristics : List[BleCharacteristic]
+        A list of BleCharacteristic objects representing the
+        characteristics of the service.
+    """
 
     def __init__(self, uuid: str, characteristics: list[BleCharacteristic]):
-        """
-        Initializes a new instance of the BleService class.
-
-        Parameters
-        ----------
-        uuid : str
-            The UUID of the service.
-        characteristics : list of BleCharacteristic
-            A list of BleCharacteristic objects representing the
-            characteristics of the service.
-        """
         self.uuid = uuid
         self.characteristics = characteristics
 
@@ -108,14 +134,6 @@ class Ble:
 
         Runs asyncio event loop in a separate thread which handles all BLE
         events.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
         """
         self.found_devices: dict[str, BleDevice] = {}
         self.on_device: Callable[[BleDevice], None] | None = None
@@ -150,10 +168,6 @@ class Ble:
             Optional callback function to be called when a BLE device is found.
             The callback function should take a `BleDevice` object as its
             parameter.
-
-        Returns
-        -------
-        None
         """
         self.found_devices = {}  # clear previously found devices
         self.on_device = on_device
@@ -167,14 +181,6 @@ class Ble:
         """
         Stops the ongoing Bluetooth Low Energy (BLE) scan if it is currently
         running.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
         """
         if self.scanning:
             self.event_loop.call_soon_threadsafe(self.scan_stop_event.set)
@@ -183,10 +189,6 @@ class Ble:
     def is_scanning(self) -> bool:
         """
         Returns the scanning status.
-
-        Parameters
-        ----------
-        None
 
         Returns
         -------
@@ -224,10 +226,6 @@ class Ble:
             Callback for when the connection is established. Defaults to None.
         on_disconnect : Callable[[], None] or None, optional
             Callback for when the connection is terminated. Defaults to None.
-
-        Returns
-        -------
-        None
         """
         if not self.is_connected(dev):
             if on_connect is not None:
@@ -251,10 +249,6 @@ class Ble:
         ----------
         dev : BleDevice
             The BLE device to disconnect.
-
-        Returns
-        -------
-        None
         """
         if self.is_connected(dev):
             self.status_devices[dev.address] = BleStatus.Disconnecting
@@ -303,7 +297,8 @@ class Ble:
         Returns
         -------
         BleStatus or None
-            The connection status of the device.
+            The connection status of the device, if device is connected.
+            None if the device is not connected.
         """
         if dev.address in self.status_devices:
             return self.status_devices[dev.address]
@@ -411,12 +406,11 @@ class Ble:
         -------
         bytearray or None
             The result of the write operation, or None if the write failed.
-
-        This function checks if the device is connected and if the
-        characteristic exists and is writable. If so, it writes the data to
-        the characteristic. The result of the write operation is returned.
-        If the device is not connected or the characteristic does not exist or
-        is not writable, None is returned.
+            This function checks if the device is connected and if the
+            characteristic exists and is writable. If so, it writes the data to
+            the characteristic. The result of the write operation is returned.
+            If the device is not connected or the characteristic does not
+            exist or is not writable, None is returned.
         """
         if self.is_connected(dev):
             client = self.connected_devices[dev.address]._client
