@@ -51,7 +51,7 @@ class Serial:
         on_data : Callable[[bytes], None]
             A callback function that will be called whenever new data is
             received from the serial port.
-        **port_kwargs
+        port_kwargs
             Additional keyword arguments to pass to the `serial.Serial`
             constructor, such as baud_rate, parity, etc. Check the
             `serial.Serial` documentation for more information.
