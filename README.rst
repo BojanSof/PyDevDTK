@@ -2,6 +2,9 @@
     :align: center
     :width: 256
 
+PyDevDTK
+========
+
 Python package that provides basic tools for device development, including:
 
 Communication protocols:
