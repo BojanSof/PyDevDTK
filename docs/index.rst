@@ -7,6 +7,12 @@
 
 .. toctree::
    :maxdepth: 1
+   :caption: Examples
+   
+   examples
+
+.. toctree::
+   :maxdepth: 1
    :caption: API Documentation
    
    coms

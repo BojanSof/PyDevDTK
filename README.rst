@@ -42,11 +42,6 @@ If you need to install the package locally for development, run the following co
 
     pip install -e .
 
-Examples
---------
-
-Examples can be found under ``examples`` folder.
-
 Requirements
 ------------
 
