@@ -1,5 +1,6 @@
 import time
 
+import matplotlib
 import matplotlib.pyplot as plt
 
 
@@ -85,7 +86,7 @@ class Plotter:
         fig.canvas.draw()
         bg = fig.canvas.copy_from_bbox(fig.bbox)
         self.figs.append([fig, bg, artists])
-        fig.canvas.mpl_connect("draw_event", self.on_draw)
+        fig.canvas.mpl_connect("draw_event", self._on_draw)
         # exclude artists from regular redraw
         for artist in artists:
             artist.set_animated(True)
@@ -114,7 +115,7 @@ class Plotter:
                 fig.draw_artist(artist)
             fig.canvas.blit(fig.bbox)
 
-    def on_draw(self, event):
+    def _on_draw(self, event: matplotlib.backend_bases.Event):
         """
         Callback method that is called when a figure is redrawn.
         """
@@ -135,7 +136,7 @@ class Plotter:
         plt.show(block=False)
         for i_fig, (fig, _, _) in enumerate(self.figs):
             bg = fig.canvas.copy_from_bbox(fig.bbox)
-            fig.canvas.mpl_connect("draw_event", self.on_draw)
+            fig.canvas.mpl_connect("draw_event", self._on_draw)
             self.figs[i_fig][1] = bg
         self.plot_closed_event.clear()
         self.event_processing = True
