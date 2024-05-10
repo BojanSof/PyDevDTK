@@ -3,11 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. include:: ../README.md
-   :parser: myst_parser.sphinx_
+.. include:: ../README.rst
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Documentation:
+   :maxdepth: 1
+   :caption: Examples
+   
+   examples
 
-   api
+.. toctree::
+   :maxdepth: 1
+   :caption: API Documentation
+   
+   coms
+   plotting

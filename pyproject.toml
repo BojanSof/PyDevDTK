@@ -10,7 +10,7 @@ authors = [
     { name="Bojan Sofronievski", email="bojan.drago@gmail.com" },
 ]
 description = "Python device development toolkit"
-readme = "README.md"
+readme = "README.rst"
 requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
