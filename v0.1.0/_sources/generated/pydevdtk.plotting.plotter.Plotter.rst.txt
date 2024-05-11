@@ -1,0 +1,44 @@
+pydevdtk.plotting.plotter.Plotter
+=================================
+
+.. currentmodule:: pydevdtk.plotting.plotter
+
+.. autoclass:: Plotter
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Plotter.__init__
+      ~Plotter.add_artist
+      ~Plotter.close
+      ~Plotter.create_axis
+      ~Plotter.create_bar_plot
+      ~Plotter.create_figure
+      ~Plotter.create_image_plot
+      ~Plotter.create_line_plot
+      ~Plotter.create_scatter_plot
+      ~Plotter.modify_axis
+      ~Plotter.on_draw
+      ~Plotter.process_cmd_queue
+      ~Plotter.process_data_queue
+      ~Plotter.process_events
+      ~Plotter.show
+      ~Plotter.update_bar_plot
+      ~Plotter.update_figures
+      ~Plotter.update_image_plot
+      ~Plotter.update_line_plot
+      ~Plotter.update_scatter_plot
+   
+   
+
+   
+   
+   

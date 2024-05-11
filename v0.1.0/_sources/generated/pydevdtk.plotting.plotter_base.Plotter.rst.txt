@@ -1,0 +1,34 @@
+pydevdtk.plotting.plotter\_base.Plotter
+=======================================
+
+.. currentmodule:: pydevdtk.plotting.plotter_base
+
+.. autoclass:: Plotter
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Plotter.__init__
+      ~Plotter.add_figure_and_artists
+      ~Plotter.close
+      ~Plotter.init
+      ~Plotter.on_draw
+      ~Plotter.process_cmd_queue
+      ~Plotter.process_data_queue
+      ~Plotter.process_events
+      ~Plotter.show
+      ~Plotter.update_figures
+   
+   
+
+   
+   
+   

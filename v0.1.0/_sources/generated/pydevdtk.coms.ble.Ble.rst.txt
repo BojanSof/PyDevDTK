@@ -1,0 +1,39 @@
+pydevdtk.coms.ble.Ble
+=====================
+
+.. currentmodule:: pydevdtk.coms.ble
+
+.. autoclass:: Ble
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Ble.__init__
+      ~Ble.connect
+      ~Ble.disconnect
+      ~Ble.get_connected_devices
+      ~Ble.get_found_devices
+      ~Ble.get_services_and_characteristics
+      ~Ble.get_status
+      ~Ble.is_connected
+      ~Ble.is_scanning
+      ~Ble.read_characteristic
+      ~Ble.start_notifications
+      ~Ble.start_scan
+      ~Ble.stop_notifications
+      ~Ble.stop_scan
+      ~Ble.write_characteristic
+   
+   
+
+   
+   
+   

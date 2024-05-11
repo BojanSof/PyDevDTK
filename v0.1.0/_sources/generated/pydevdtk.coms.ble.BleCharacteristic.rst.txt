@@ -1,0 +1,25 @@
+pydevdtk.coms.ble.BleCharacteristic
+===================================
+
+.. currentmodule:: pydevdtk.coms.ble
+
+.. autoclass:: BleCharacteristic
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BleCharacteristic.__init__
+   
+   
+
+   
+   
+   

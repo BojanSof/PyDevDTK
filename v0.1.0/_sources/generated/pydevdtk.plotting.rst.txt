@@ -1,0 +1,34 @@
+pydevdtk.plotting
+=================
+
+.. automodule:: pydevdtk.plotting
+  
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pydevdtk.plotting.plotter
+   pydevdtk.plotting.plotter_base
+   pydevdtk.plotting.plotter_manager
+

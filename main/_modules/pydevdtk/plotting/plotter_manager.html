@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pydevdtk.plotting.plotter_manager &mdash; PyDevDTK  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyDevDTK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Serial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html#ble">BLE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html#plotter">Plotter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html#custom-plotter">Custom plotter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../coms.html">Communication Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plotting.html">Plotting</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyDevDTK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pydevdtk.plotting.plotter_manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pydevdtk.plotting.plotter_manager</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">.plotter</span> <span class="kn">import</span> <span class="n">Plotter</span>
+<span class="kn">from</span> <span class="nn">.plotter_base</span> <span class="kn">import</span> <span class="n">Plotter</span> <span class="k">as</span> <span class="n">PlotterBase</span>
+
+
+<div class="viewcode-block" id="PlotterManager">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager">[docs]</a>
+<span class="k">class</span> <span class="nc">PlotterManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manager for the plotter.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    plotter : Plotter or PlotterBase</span>
+<span class="sd">        The plotter object that will be used to create figures and artists.</span>
+<span class="sd">    fps : int or None, optional</span>
+<span class="sd">        The frames per second at which the plotter updates the figures.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plotter</span><span class="p">:</span> <span class="n">Plotter</span> <span class="o">|</span> <span class="n">PlotterBase</span><span class="p">,</span> <span class="n">fps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_event</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_plot_closed</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotter_worker</span> <span class="o">=</span> <span class="n">plotter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span>
+            <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">plotter_worker</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stop_event</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">is_plot_closed</span><span class="p">,</span>
+                <span class="n">fps</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PlotterManager.show">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.show">[docs]</a>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Show the plotter window.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="s2">&quot;show&quot;</span><span class="p">,))</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.close">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.close">[docs]</a>
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the plotter window.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="s2">&quot;close&quot;</span><span class="p">,))</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.stop">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.stop">[docs]</a>
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop the plotter process.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">exitcode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t stop plotter window process&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.is_alive">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.is_alive">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the plotter process is alive.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">is_alive</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.is_shown">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.is_shown">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_shown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the plotter window is shown.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_plot_closed</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.add_data">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.add_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add data to the plotter&#39;s data queue.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : dict[str]</span>
+<span class="sd">            Dictionary of data, where the keys are the artist ids.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.create_figure">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.create_figure">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_figure</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fig_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">grid_rows</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">grid_cols</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a figure with the given ID, number of rows and columns, and</span>
+<span class="sd">        keyword arguments.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fig_id : str</span>
+<span class="sd">            The ID of the figure.</span>
+<span class="sd">        grid_rows : int, optional</span>
+<span class="sd">            The number of rows in the grid. Default is 1.</span>
+<span class="sd">        grid_cols : int, optional</span>
+<span class="sd">            The number of columns in the grid. Default is 1.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Keyword arguments to pass to the figure constructor.</span>
+<span class="sd">            Look-up the docstring for `matplotlib.figure.Figure`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">grid_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid_rows</span><span class="p">,</span> <span class="n">grid_cols</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="s2">&quot;create_fig&quot;</span><span class="p">,</span> <span class="n">fig_id</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.create_axis">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.create_axis">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_axis</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">axis_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">fig_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">i_row</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">i_col</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">num_rows</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">num_cols</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create an axis with the given ID, figure ID, and position in the grid.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        axis_id : str</span>
+<span class="sd">            The ID of the axis.</span>
+<span class="sd">        fig_id : str</span>
+<span class="sd">            The ID of the figure.</span>
+<span class="sd">        i_row : int</span>
+<span class="sd">            The row index of the axis in the grid.</span>
+<span class="sd">        i_col : int</span>
+<span class="sd">            The column index of the axis in the grid.</span>
+<span class="sd">        num_rows : int, optional</span>
+<span class="sd">            The number of rows in the grid. Default is 1.</span>
+<span class="sd">        num_cols : int, optional</span>
+<span class="sd">            The number of columns in the grid. Default is 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;create_axis&quot;</span><span class="p">,</span>
+                <span class="n">axis_id</span><span class="p">,</span>
+                <span class="n">fig_id</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">i_row</span><span class="p">,</span> <span class="n">i_col</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.modify_axis">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.modify_axis">[docs]</a>
+    <span class="k">def</span> <span class="nf">modify_axis</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">axis_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">xlim</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ylim</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">xlabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ylabel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">xticks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">xticklabels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">yticks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">yticklabels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">legend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Modify the axis with the given ID.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        axis_id : str</span>
+<span class="sd">            The ID of the axis.</span>
+<span class="sd">        xlim : Tuple[float, float], optional</span>
+<span class="sd">            The x-axis limits. Default is None.</span>
+<span class="sd">        ylim : Tuple[float, float], optional</span>
+<span class="sd">            The y-axis limits. Default is None.</span>
+<span class="sd">        title : str, optional</span>
+<span class="sd">            The title of the axis. Default is None.</span>
+<span class="sd">        xlabel : str, optional</span>
+<span class="sd">            The label for the x-axis. Default is None.</span>
+<span class="sd">        ylabel : str, optional</span>
+<span class="sd">            The label for the y-axis. Default is None.</span>
+<span class="sd">        xticks : List[float], optional</span>
+<span class="sd">            The locations of the tick marks on the x-axis. Default is None.</span>
+<span class="sd">        xticklabels : List[str], optional</span>
+<span class="sd">            The labels for the tick marks on the x-axis. Default is None.</span>
+<span class="sd">        yticks : List[float], optional</span>
+<span class="sd">            The locations of the tick marks on the y-axis. Default is None.</span>
+<span class="sd">        yticklabels : List[str], optional</span>
+<span class="sd">            The labels for the tick marks on the y-axis. Default is None.</span>
+<span class="sd">        legend : bool, optional</span>
+<span class="sd">            Whether to show the legend. Default is False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;modify_axis&quot;</span><span class="p">,</span>
+                <span class="n">axis_id</span><span class="p">,</span>
+                <span class="n">xlim</span><span class="p">,</span>
+                <span class="n">ylim</span><span class="p">,</span>
+                <span class="n">title</span><span class="p">,</span>
+                <span class="n">xlabel</span><span class="p">,</span>
+                <span class="n">ylabel</span><span class="p">,</span>
+                <span class="n">xticks</span><span class="p">,</span>
+                <span class="n">xticklabels</span><span class="p">,</span>
+                <span class="n">yticks</span><span class="p">,</span>
+                <span class="n">yticklabels</span><span class="p">,</span>
+                <span class="n">legend</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.create_line_plot">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.create_line_plot">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_line_plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">artist_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">axis_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a line plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        artist_id : str</span>
+<span class="sd">            The ID of the artist.</span>
+<span class="sd">        axis_id : str</span>
+<span class="sd">            The ID of the axis.</span>
+<span class="sd">        size : int</span>
+<span class="sd">            The number of points on the line plot.</span>
+<span class="sd">        kwargs : Any</span>
+<span class="sd">            Additional keyword arguments to pass to the plot method.</span>
+<span class="sd">            Look-up the docstring for `matplotlib.Axes.plot` method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;create_line_plot&quot;</span><span class="p">,</span> <span class="n">artist_id</span><span class="p">,</span> <span class="n">axis_id</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.create_scatter_plot">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.create_scatter_plot">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_scatter_plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">artist_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">axis_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">num_points</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a scatter plot with the given ID, axis ID, number of points, and</span>
+<span class="sd">        keyword arguments.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        artist_id : str</span>
+<span class="sd">            The ID of the artist.</span>
+<span class="sd">        axis_id : str</span>
+<span class="sd">            The ID of the axis.</span>
+<span class="sd">        num_points : int</span>
+<span class="sd">            The number of points in the scatter plot.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to pass to the scatter method.</span>
+<span class="sd">            Look-up the docstring for `matplotlib.Axes.scatter` method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;create_scatter_plot&quot;</span><span class="p">,</span> <span class="n">artist_id</span><span class="p">,</span> <span class="n">axis_id</span><span class="p">,</span> <span class="n">num_points</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.create_bar_plot">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.create_bar_plot">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_bar_plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">artist_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">axis_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">num_bars</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a bar plot.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        artist_id : str</span>
+<span class="sd">            The ID of the artist.</span>
+<span class="sd">        axis_id : str</span>
+<span class="sd">            The ID of the axis.</span>
+<span class="sd">        num_bars : int</span>
+<span class="sd">            The number of bars in the bar plot.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to pass to the bar method.</span>
+<span class="sd">            Look-up the docstring for `matplotlib.Axes.bar` method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;create_bar_plot&quot;</span><span class="p">,</span> <span class="n">artist_id</span><span class="p">,</span> <span class="n">axis_id</span><span class="p">,</span> <span class="n">num_bars</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PlotterManager.create_image_plot">
+<a class="viewcode-back" href="../../../plotting.html#pydevdtk.plotting.plotter_manager.PlotterManager.create_image_plot">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_image_plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">artist_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">axis_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">img_shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">cbar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create an image plot with the given ID, axis ID, image shape, and</span>
+<span class="sd">        keyword arguments.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        artist_id : str</span>
+<span class="sd">            The ID of the artist.</span>
+<span class="sd">        axis_id : str</span>
+<span class="sd">            The ID of the axis.</span>
+<span class="sd">        img_shape : tuple[int, int]</span>
+<span class="sd">            The shape of the image.</span>
+<span class="sd">        cbar : bool, optional</span>
+<span class="sd">            Whether to include colorbar, by default False.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to pass to the imshow method.</span>
+<span class="sd">            Look-up the docstring for `matplotlib.Axes.imshow` method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;create_image_plot&quot;</span><span class="p">,</span> <span class="n">artist_id</span><span class="p">,</span> <span class="n">axis_id</span><span class="p">,</span> <span class="n">img_shape</span><span class="p">,</span> <span class="n">cbar</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Bojan Sofronievski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: main
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../../../../v0.1.0/index.html">v0.1.0</a></dd>
+      <dd><a href="../../../../v0.1.1/index.html">v0.1.1</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="plotter_manager.html">main</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

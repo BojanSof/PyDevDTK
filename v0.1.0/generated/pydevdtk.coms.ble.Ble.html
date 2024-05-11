@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pydevdtk.coms.ble.Ble &mdash; PyDevDTK 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=01f34227"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pydevdtk.coms.ble.BleCharacteristic" href="pydevdtk.coms.ble.BleCharacteristic.html" />
+    <link rel="prev" title="pydevdtk.coms.ble" href="pydevdtk.coms.ble.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PyDevDTK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pydevdtk.html">pydevdtk</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pydevdtk.coms.html">pydevdtk.coms</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pydevdtk.coms.ble.html">pydevdtk.coms.ble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pydevdtk.coms.serial.html">pydevdtk.coms.serial</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pydevdtk.plotting.html">pydevdtk.plotting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyDevDTK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API</a></li>
+          <li class="breadcrumb-item"><a href="pydevdtk.html">pydevdtk</a></li>
+          <li class="breadcrumb-item"><a href="pydevdtk.coms.html">pydevdtk.coms</a></li>
+          <li class="breadcrumb-item"><a href="pydevdtk.coms.ble.html">pydevdtk.coms.ble</a></li>
+      <li class="breadcrumb-item active">pydevdtk.coms.ble.Ble</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/generated/pydevdtk.coms.ble.Ble.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pydevdtk-coms-ble-ble">
+<h1>pydevdtk.coms.ble.Ble<a class="headerlink" href="#pydevdtk-coms-ble-ble" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydevdtk.coms.ble.</span></span><span class="sig-name descname"><span class="pre">Ble</span></span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class that allows to utilize the BLE module of the device,
+including scanning for BLE devices, connecting to BLE devices,
+and data operations including read, write and notify.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initializes a new instance allowing to utilize the BLE module of the
+device, including scanning for BLE devices, connecting to BLE devices,
+and data operations including read, write and notify.</p>
+<p>Runs asyncio event loop in a separate thread which handles all BLE
+events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.__init__" title="pydevdtk.coms.ble.Ble.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p>Initializes a new instance allowing to utilize the BLE module of the device, including scanning for BLE devices, connecting to BLE devices, and data operations including read, write and notify.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.connect" title="pydevdtk.coms.ble.Ble.connect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connect</span></code></a>(dev[, on_connect, on_disconnect])</p></td>
+<td><p>A method to connect to a BLE device if it is not already connected to it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.disconnect" title="pydevdtk.coms.ble.Ble.disconnect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disconnect</span></code></a>(dev)</p></td>
+<td><p>Disconnects a BLE device if it is currently connected to it.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.get_connected_devices" title="pydevdtk.coms.ble.Ble.get_connected_devices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_connected_devices</span></code></a>()</p></td>
+<td><p>Returns a list of all the connected devices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.get_found_devices" title="pydevdtk.coms.ble.Ble.get_found_devices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_found_devices</span></code></a>()</p></td>
+<td><p>Returns a list of all the found devices during scanning.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.get_services_and_characteristics" title="pydevdtk.coms.ble.Ble.get_services_and_characteristics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_services_and_characteristics</span></code></a>(dev)</p></td>
+<td><p>Retrieves the list of services and characteristics of a given BLE device.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.get_status" title="pydevdtk.coms.ble.Ble.get_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_status</span></code></a>(dev)</p></td>
+<td><p>Retrieves the status of the connection for a given BLE device.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.is_connected" title="pydevdtk.coms.ble.Ble.is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_connected</span></code></a>(dev)</p></td>
+<td><p>Check if a given BLE device is connected.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.is_scanning" title="pydevdtk.coms.ble.Ble.is_scanning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_scanning</span></code></a>()</p></td>
+<td><p>Returns the scanning status.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.read_characteristic" title="pydevdtk.coms.ble.Ble.read_characteristic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_characteristic</span></code></a>(dev, char_uuid)</p></td>
+<td><p>Reads the value of a characteristic from a BLE device.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.start_notifications" title="pydevdtk.coms.ble.Ble.start_notifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_notifications</span></code></a>(dev, char_uuid, on_data)</p></td>
+<td><p>A function to start notifications for a specific characteristic of a BLE device.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.start_scan" title="pydevdtk.coms.ble.Ble.start_scan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_scan</span></code></a>([on_device])</p></td>
+<td><p>Start scanning for Bluetooth Low Energy (BLE) devices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.stop_notifications" title="pydevdtk.coms.ble.Ble.stop_notifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop_notifications</span></code></a>(dev, char_uuid)</p></td>
+<td><p>A function to stop notifications for a specific characteristic of a BLE device.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.stop_scan" title="pydevdtk.coms.ble.Ble.stop_scan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop_scan</span></code></a>()</p></td>
+<td><p>Stops the ongoing Bluetooth Low Energy (BLE) scan if it is currently running.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydevdtk.coms.ble.Ble.write_characteristic" title="pydevdtk.coms.ble.Ble.write_characteristic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_characteristic</span></code></a>(dev, char_uuid, data, ...)</p></td>
+<td><p>Writes data to a characteristic of a BLE device.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_connect</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_disconnect</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.connect" title="Link to this definition"></a></dt>
+<dd><p>A method to connect to a BLE device if it is not already connected to
+it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dev</strong> (<a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><em>BleDevice</em></a>) – The BLE device to connect to.</p></li>
+<li><p><strong>on_connect</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>None</em><em>] or </em><em>None</em><em>, </em><em>optional</em>) – Callback for when the connection is established. Defaults to None.</p></li>
+<li><p><strong>on_disconnect</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>None</em><em>] or </em><em>None</em><em>, </em><em>optional</em>) – Callback for when the connection is terminated. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.disconnect" title="Link to this definition"></a></dt>
+<dd><p>Disconnects a BLE device if it is currently connected to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dev</strong> (<a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><em>BleDevice</em></a>) – The BLE device to disconnect.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.get_connected_devices">
+<span class="sig-name descname"><span class="pre">get_connected_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.get_connected_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.get_connected_devices" title="Link to this definition"></a></dt>
+<dd><p>Returns a list of all the connected devices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of BleDevice objects representing the connected devices.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice">BleDevice</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.get_found_devices">
+<span class="sig-name descname"><span class="pre">get_found_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.get_found_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.get_found_devices" title="Link to this definition"></a></dt>
+<dd><p>Returns a list of all the found devices during scanning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of BleDevice objects representing the found devices.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice">BleDevice</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.get_services_and_characteristics">
+<span class="sig-name descname"><span class="pre">get_services_and_characteristics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pydevdtk.coms.ble.BleService.html#pydevdtk.coms.ble.BleService" title="pydevdtk.coms.ble.BleService"><span class="pre">BleService</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.get_services_and_characteristics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.get_services_and_characteristics" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the list of services and characteristics of a given BLE
+device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dev</strong> (<a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><em>BleDevice</em></a>) – The BLE device for which to retrieve the services and
+characteristics.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of BleService objects representing the services and
+characteristics of the device.
+Each BleService object contains the UUID of the service and a list
+of BleCharacteristic objects representing the characteristics of
+the service.
+Returns None if the device is not connected.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of <a class="reference internal" href="pydevdtk.coms.ble.BleService.html#pydevdtk.coms.ble.BleService" title="pydevdtk.coms.ble.BleService">BleService</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.get_status">
+<span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pydevdtk.coms.ble.BleStatus.html#pydevdtk.coms.ble.BleStatus" title="pydevdtk.coms.ble.BleStatus"><span class="pre">BleStatus</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.get_status" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the status of the connection for a given BLE device.
+Useful to check if the device is in process of establishing
+connection, disconnecting or it is already connected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dev</strong> (<a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><em>BleDevice</em></a>) – The BLE device for which to retrieve the status.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection status of the device.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pydevdtk.coms.ble.BleStatus.html#pydevdtk.coms.ble.BleStatus" title="pydevdtk.coms.ble.BleStatus">BleStatus</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.is_connected">
+<span class="sig-name descname"><span class="pre">is_connected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.is_connected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.is_connected" title="Link to this definition"></a></dt>
+<dd><p>Check if a given BLE device is connected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dev</strong> (<a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><em>BleDevice</em></a>) – The BLE device to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the device is connected, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.is_scanning">
+<span class="sig-name descname"><span class="pre">is_scanning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.is_scanning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.is_scanning" title="Link to this definition"></a></dt>
+<dd><p>Returns the scanning status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The scanning status (True if scanning, False otherwise).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.read_characteristic">
+<span class="sig-name descname"><span class="pre">read_characteristic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">char_uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.read_characteristic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.read_characteristic" title="Link to this definition"></a></dt>
+<dd><p>Reads the value of a characteristic from a BLE device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dev</strong> (<a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><em>BleDevice</em></a>) – The BLE device to read from.</p></li>
+<li><p><strong>char_uuid</strong> (<em>str</em>) – The UUID of the characteristic to read.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value of the characteristic if it exists and is readable,
+otherwise None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytearray or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.start_notifications">
+<span class="sig-name descname"><span class="pre">start_notifications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">char_uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.start_notifications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.start_notifications" title="Link to this definition"></a></dt>
+<dd><p>A function to start notifications for a specific characteristic of a
+BLE device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dev</strong> (<a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><em>BleDevice</em></a>) – The BLE device for which notifications are to be started.</p></li>
+<li><p><strong>char_uuid</strong> (<em>str</em>) – The UUID of the characteristic for which notifications are to be
+started.</p></li>
+<li><p><strong>on_data</strong> (<em>Callable</em><em>[</em><em>[</em><em>bytes</em><em> or </em><em>bytearray</em><em>]</em><em>, </em><em>None</em><em>]</em>) – The callback function to handle the received notification data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if notifications were successfully started, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.start_scan">
+<span class="sig-name descname"><span class="pre">start_scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on_device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.start_scan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.start_scan" title="Link to this definition"></a></dt>
+<dd><p>Start scanning for Bluetooth Low Energy (BLE) devices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>on_device</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><em>BleDevice</em></a><em>]</em><em>, </em><em>None</em><em>] or </em><em>None</em><em>, </em><em>optional</em>) – Optional callback function to be called when a BLE device is found.
+The callback function should take a <cite>BleDevice</cite> object as its
+parameter.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.stop_notifications">
+<span class="sig-name descname"><span class="pre">stop_notifications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">char_uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.stop_notifications"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.stop_notifications" title="Link to this definition"></a></dt>
+<dd><p>A function to stop notifications for a specific characteristic of a
+BLE device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dev</strong> (<a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><em>BleDevice</em></a>) – The BLE device for which notifications are to be stopped.</p></li>
+<li><p><strong>char_uuid</strong> (<em>str</em>) – The UUID of the characteristic for which notifications are to be
+stopped.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if notifications were successfully stopped, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.stop_scan">
+<span class="sig-name descname"><span class="pre">stop_scan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.stop_scan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.stop_scan" title="Link to this definition"></a></dt>
+<dd><p>Stops the ongoing Bluetooth Low Energy (BLE) scan if it is currently
+running.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.coms.ble.Ble.write_characteristic">
+<span class="sig-name descname"><span class="pre">write_characteristic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><span class="pre">BleDevice</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">char_uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pydevdtk/coms/ble.html#Ble.write_characteristic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.coms.ble.Ble.write_characteristic" title="Link to this definition"></a></dt>
+<dd><p>Writes data to a characteristic of a BLE device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dev</strong> (<a class="reference internal" href="pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice" title="pydevdtk.coms.ble.BleDevice"><em>BleDevice</em></a>) – The BLE device to write to.</p></li>
+<li><p><strong>char_uuid</strong> (<em>str</em>) – The UUID of the characteristic to write to.</p></li>
+<li><p><strong>data</strong> (<em>bytes</em><em> or </em><em>bytearray</em>) – The data to write.</p></li>
+<li><p><strong>response</strong> (<em>bool</em>) – Whether to expect a response from the device.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>bytearray or None</em> – The result of the write operation, or None if the write failed.</p></li>
+<li><p><em>This function checks if the device is connected and if the</em></p></li>
+<li><p><em>characteristic exists and is writable. If so, it writes the data to</em></p></li>
+<li><p><em>the characteristic. The result of the write operation is returned.</em></p></li>
+<li><p><em>If the device is not connected or the characteristic does not exist or</em></p></li>
+<li><p><em>is not writable, None is returned.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pydevdtk.coms.ble.html" class="btn btn-neutral float-left" title="pydevdtk.coms.ble" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pydevdtk.coms.ble.BleCharacteristic.html" class="btn btn-neutral float-right" title="pydevdtk.coms.ble.BleCharacteristic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Bojan Sofronievski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.1.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="pydevdtk.coms.ble.Ble.html">v0.1.0</a></dd>
+      <dd><a href="../../v0.1.1/index.html">v0.1.1</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="../../main/index.html">main</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+pydevdtk.plotting.plotter.PlotType
+==================================
+
+.. currentmodule:: pydevdtk.plotting.plotter
+
+.. autoclass:: PlotType
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PlotType.Line
+      ~PlotType.Scatter
+      ~PlotType.Bar
+      ~PlotType.Text
+      ~PlotType.Image
+   
+   

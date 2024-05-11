@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plotting &mdash; PyDevDTK  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Communication Protocols" href="coms.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyDevDTK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Serial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html#ble">BLE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html#plotter">Plotter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html#custom-plotter">Custom plotter</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="coms.html">Communication Protocols</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Plotting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plotter-base">Plotter Base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydevdtk.plotting.plotter_base.Plotter"><code class="docutils literal notranslate"><span class="pre">Plotter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_base.Plotter.add_figure_and_artists"><code class="docutils literal notranslate"><span class="pre">Plotter.add_figure_and_artists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_base.Plotter.close"><code class="docutils literal notranslate"><span class="pre">Plotter.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_base.Plotter.init"><code class="docutils literal notranslate"><span class="pre">Plotter.init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_base.Plotter.process_cmd_queue"><code class="docutils literal notranslate"><span class="pre">Plotter.process_cmd_queue()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_base.Plotter.process_data_queue"><code class="docutils literal notranslate"><span class="pre">Plotter.process_data_queue()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_base.Plotter.process_events"><code class="docutils literal notranslate"><span class="pre">Plotter.process_events()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_base.Plotter.show"><code class="docutils literal notranslate"><span class="pre">Plotter.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_base.Plotter.update_figures"><code class="docutils literal notranslate"><span class="pre">Plotter.update_figures()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#plotter">Plotter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydevdtk.plotting.plotter.PlotType"><code class="docutils literal notranslate"><span class="pre">PlotType</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.PlotType.Bar"><code class="docutils literal notranslate"><span class="pre">PlotType.Bar</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.PlotType.Image"><code class="docutils literal notranslate"><span class="pre">PlotType.Image</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.PlotType.Line"><code class="docutils literal notranslate"><span class="pre">PlotType.Line</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.PlotType.Scatter"><code class="docutils literal notranslate"><span class="pre">PlotType.Scatter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.PlotType.Text"><code class="docutils literal notranslate"><span class="pre">PlotType.Text</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter"><code class="docutils literal notranslate"><span class="pre">Plotter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.add_artist"><code class="docutils literal notranslate"><span class="pre">Plotter.add_artist()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.close"><code class="docutils literal notranslate"><span class="pre">Plotter.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.create_axis"><code class="docutils literal notranslate"><span class="pre">Plotter.create_axis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.create_bar_plot"><code class="docutils literal notranslate"><span class="pre">Plotter.create_bar_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.create_figure"><code class="docutils literal notranslate"><span class="pre">Plotter.create_figure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.create_image_plot"><code class="docutils literal notranslate"><span class="pre">Plotter.create_image_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.create_line_plot"><code class="docutils literal notranslate"><span class="pre">Plotter.create_line_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.create_scatter_plot"><code class="docutils literal notranslate"><span class="pre">Plotter.create_scatter_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.modify_axis"><code class="docutils literal notranslate"><span class="pre">Plotter.modify_axis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.process_cmd_queue"><code class="docutils literal notranslate"><span class="pre">Plotter.process_cmd_queue()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.process_data_queue"><code class="docutils literal notranslate"><span class="pre">Plotter.process_data_queue()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.process_events"><code class="docutils literal notranslate"><span class="pre">Plotter.process_events()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.show"><code class="docutils literal notranslate"><span class="pre">Plotter.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.update_bar_plot"><code class="docutils literal notranslate"><span class="pre">Plotter.update_bar_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.update_figures"><code class="docutils literal notranslate"><span class="pre">Plotter.update_figures()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.update_image_plot"><code class="docutils literal notranslate"><span class="pre">Plotter.update_image_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.update_line_plot"><code class="docutils literal notranslate"><span class="pre">Plotter.update_line_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter.update_scatter_plot"><code class="docutils literal notranslate"><span class="pre">Plotter.update_scatter_plot()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#plotter-manager">Plotter Manager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager"><code class="docutils literal notranslate"><span class="pre">PlotterManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.add_data"><code class="docutils literal notranslate"><span class="pre">PlotterManager.add_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.close"><code class="docutils literal notranslate"><span class="pre">PlotterManager.close()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_axis"><code class="docutils literal notranslate"><span class="pre">PlotterManager.create_axis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_bar_plot"><code class="docutils literal notranslate"><span class="pre">PlotterManager.create_bar_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_figure"><code class="docutils literal notranslate"><span class="pre">PlotterManager.create_figure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_image_plot"><code class="docutils literal notranslate"><span class="pre">PlotterManager.create_image_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_line_plot"><code class="docutils literal notranslate"><span class="pre">PlotterManager.create_line_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_scatter_plot"><code class="docutils literal notranslate"><span class="pre">PlotterManager.create_scatter_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.is_alive"><code class="docutils literal notranslate"><span class="pre">PlotterManager.is_alive()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.is_shown"><code class="docutils literal notranslate"><span class="pre">PlotterManager.is_shown()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.modify_axis"><code class="docutils literal notranslate"><span class="pre">PlotterManager.modify_axis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.show"><code class="docutils literal notranslate"><span class="pre">PlotterManager.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pydevdtk.plotting.plotter_manager.PlotterManager.stop"><code class="docutils literal notranslate"><span class="pre">PlotterManager.stop()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyDevDTK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Plotting</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/plotting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="plotting">
+<h1>Plotting<a class="headerlink" href="#plotting" title="Link to this heading"></a></h1>
+<p>This section of the documentation describes the plotting tools provided by
+the PyDevDTK. It details various types of plots that can be used for
+real-time data visualization.
+It is based on <code class="docutils literal notranslate"><span class="pre">PlotterManager</span></code> object which holds <code class="docutils literal notranslate"><span class="pre">Plotter</span></code> or
+<code class="docutils literal notranslate"><span class="pre">PlotterBase</span></code> based instance and communicates with this object to provide
+real-time data visualization.</p>
+<section id="plotter-base">
+<h2>Plotter Base<a class="headerlink" href="#plotter-base" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">PlotterBase</span></code> class is the base class for plotters that allow to use any
+matplotlib functions for visualizing data in real-time. User is responsible for
+creating all the artists using matplotlib APIs and providing function for updating
+the artists.</p>
+<dl class="py class" id="module-pydevdtk.plotting.plotter_base">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_base.Plotter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydevdtk.plotting.plotter_base.</span></span><span class="sig-name descname"><span class="pre">Plotter</span></span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_base.html#Plotter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_base.Plotter" title="Link to this definition"></a></dt>
+<dd><p>Base class for plotting. Represents a plotter object that continuously
+updates and redraws figures based on incoming data.
+User should subclass this class and implement the  <cite>init</cite> method to create
+the figure and its artists and <cite>process_data_queue</cite> method to update the
+artists based on the incoming data.</p>
+<p>The <cite>add_figure_and_artists</cite> method is used to add a figure and its artists
+to the plotter and mark them as animated (changing as opposed to the
+background).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_base.Plotter.add_figure_and_artists">
+<span class="sig-name descname"><span class="pre">add_figure_and_artists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">artists</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_base.html#Plotter.add_figure_and_artists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_base.Plotter.add_figure_and_artists" title="Link to this definition"></a></dt>
+<dd><p>Adds a figure and its artists to the plotter. The background of the
+figure is saved for updates.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_base.Plotter.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_base.html#Plotter.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_base.Plotter.close" title="Link to this definition"></a></dt>
+<dd><p>Close all the figures.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_base.Plotter.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_base.html#Plotter.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_base.Plotter.init" title="Link to this definition"></a></dt>
+<dd><p>Initializes the plotter. Should be overridden in a subclass.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_base.Plotter.process_cmd_queue">
+<span class="sig-name descname"><span class="pre">process_cmd_queue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_base.html#Plotter.process_cmd_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_base.Plotter.process_cmd_queue" title="Link to this definition"></a></dt>
+<dd><p>Processes the command queue. If a None command is received, the
+plotting is stopped.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_base.Plotter.process_data_queue">
+<span class="sig-name descname"><span class="pre">process_data_queue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_base.html#Plotter.process_data_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_base.Plotter.process_data_queue" title="Link to this definition"></a></dt>
+<dd><p>Processes the data queue. Should be overridden in a subclass.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_base.Plotter.process_events">
+<span class="sig-name descname"><span class="pre">process_events</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_base.html#Plotter.process_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_base.Plotter.process_events" title="Link to this definition"></a></dt>
+<dd><p>Process the events. If the plot is not being shown, the
+<cite>plot_closed_event</cite> is set.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_base.Plotter.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_base.html#Plotter.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_base.Plotter.show" title="Link to this definition"></a></dt>
+<dd><p>Display the figures. The background of the figures is saved and the
+<cite>plot_closed_event</cite> is cleared.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_base.Plotter.update_figures">
+<span class="sig-name descname"><span class="pre">update_figures</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_base.html#Plotter.update_figures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_base.Plotter.update_figures" title="Link to this definition"></a></dt>
+<dd><p>Update the figures based on the incoming data.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="plotter">
+<h2>Plotter<a class="headerlink" href="#plotter" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Plotter</span></code> class is simple class that can be used automatically with
+<code class="docutils literal notranslate"><span class="pre">PlotterManager</span></code> APIs for creating plots.</p>
+<dl class="py class" id="module-pydevdtk.plotting.plotter">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.PlotType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydevdtk.plotting.plotter.</span></span><span class="sig-name descname"><span class="pre">PlotType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#PlotType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.PlotType" title="Link to this definition"></a></dt>
+<dd><p>Suported types of plots.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.PlotType.Bar">
+<span class="sig-name descname"><span class="pre">Bar</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(3,)</span></em><a class="headerlink" href="#pydevdtk.plotting.plotter.PlotType.Bar" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.PlotType.Image">
+<span class="sig-name descname"><span class="pre">Image</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#pydevdtk.plotting.plotter.PlotType.Image" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.PlotType.Line">
+<span class="sig-name descname"><span class="pre">Line</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(1,)</span></em><a class="headerlink" href="#pydevdtk.plotting.plotter.PlotType.Line" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.PlotType.Scatter">
+<span class="sig-name descname"><span class="pre">Scatter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(2,)</span></em><a class="headerlink" href="#pydevdtk.plotting.plotter.PlotType.Scatter" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.PlotType.Text">
+<span class="sig-name descname"><span class="pre">Text</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(4,)</span></em><a class="headerlink" href="#pydevdtk.plotting.plotter.PlotType.Text" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydevdtk.plotting.plotter.</span></span><span class="sig-name descname"><span class="pre">Plotter</span></span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter" title="Link to this definition"></a></dt>
+<dd><p>Class for plotting data in real-time.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.add_artist">
+<span class="sig-name descname"><span class="pre">add_artist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">artist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">matplotlib.artist.Artist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pydevdtk.plotting.plotter.PlotType" title="pydevdtk.plotting.plotter.PlotType"><span class="pre">PlotType</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.add_artist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.add_artist" title="Link to this definition"></a></dt>
+<dd><p>Add an artist to the plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist_id</strong> (<em>str</em>) – Unique identifier for the artist.</p></li>
+<li><p><strong>ax_id</strong> (<em>str</em>) – Unique identifier for the axis containing the artist.</p></li>
+<li><p><strong>artist</strong> (<em>matplotlib.artist.Artist</em>) – Artist object to be added to the plot.</p></li>
+<li><p><strong>type</strong> (<a class="reference internal" href="#pydevdtk.plotting.plotter.PlotType" title="pydevdtk.plotting.plotter.PlotType"><em>PlotType</em></a>) – Type of the plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.close" title="Link to this definition"></a></dt>
+<dd><p>Close the plot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.create_axis">
+<span class="sig-name descname"><span class="pre">create_axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irow</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.create_axis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.create_axis" title="Link to this definition"></a></dt>
+<dd><p>Create a new axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax_id</strong> (<em>str</em>) – Unique identifier for the axis.</p></li>
+<li><p><strong>fig_id</strong> (<em>str</em>) – Unique identifier for the figure containing the axis.</p></li>
+<li><p><strong>irow</strong> (<em>int</em>) – Row index of the axis in the figure grid.</p></li>
+<li><p><strong>icol</strong> (<em>int</em>) – Column index of the axis in the figure grid.</p></li>
+<li><p><strong>nrows</strong> (<em>int</em>) – Total number of rows in the figure grid.</p></li>
+<li><p><strong>ncols</strong> (<em>int</em>) – Total number of columns in the figure grid.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.create_bar_plot">
+<span class="sig-name descname"><span class="pre">create_bar_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_bars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.create_bar_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.create_bar_plot" title="Link to this definition"></a></dt>
+<dd><p>Create a bar plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist_id</strong> (<em>str</em>) – Unique identifier for the plot.</p></li>
+<li><p><strong>ax_id</strong> (<em>str</em>) – Unique identifier for the axis containing the plot.</p></li>
+<li><p><strong>num_bars</strong> (<em>int</em>) – Number of bars in the bar plot.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for creating the plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.create_figure">
+<span class="sig-name descname"><span class="pre">create_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.create_figure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.create_figure" title="Link to this definition"></a></dt>
+<dd><p>Create a new figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fig_id</strong> (<em>str</em>) – Unique identifier for the figure.</p></li>
+<li><p><strong>nrows</strong> (<em>int</em>) – Number of rows in the figure grid.</p></li>
+<li><p><strong>ncols</strong> (<em>int</em>) – Number of columns in the figure grid.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for creating the figure.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.create_image_plot">
+<span class="sig-name descname"><span class="pre">create_image_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.create_image_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.create_image_plot" title="Link to this definition"></a></dt>
+<dd><p>Create an image plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist_id</strong> (<em>str</em>) – Unique identifier for the plot.</p></li>
+<li><p><strong>ax_id</strong> (<em>str</em>) – Unique identifier for the axis containing the plot.</p></li>
+<li><p><strong>img_shape</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Shape of the image data.</p></li>
+<li><p><strong>cbar</strong> (<em>bool</em>) – Whether to display a colorbar.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for creating the plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.create_line_plot">
+<span class="sig-name descname"><span class="pre">create_line_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.create_line_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.create_line_plot" title="Link to this definition"></a></dt>
+<dd><p>Create a line plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist_id</strong> (<em>str</em>) – Unique identifier for the plot.</p></li>
+<li><p><strong>ax_id</strong> (<em>str</em>) – Unique identifier for the axis containing the plot.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – Size of the data array for the plot.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for creating the plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.create_scatter_plot">
+<span class="sig-name descname"><span class="pre">create_scatter_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.create_scatter_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.create_scatter_plot" title="Link to this definition"></a></dt>
+<dd><p>Create a scatter plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist_id</strong> (<em>str</em>) – Unique identifier for the plot.</p></li>
+<li><p><strong>ax_id</strong> (<em>int</em>) – Unique identifier for the axis containing the plot.</p></li>
+<li><p><strong>num_points</strong> (<em>int</em>) – Number of points in the scatter plot.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for creating the plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.modify_axis">
+<span class="sig-name descname"><span class="pre">modify_axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xticks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xticklabels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yticks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yticklabels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.modify_axis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.modify_axis" title="Link to this definition"></a></dt>
+<dd><p>Modify an existing axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax_id</strong> (<em>str</em>) – Unique identifier for the axis.</p></li>
+<li><p><strong>xlim</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Tuple containing the x-axis limits.</p></li>
+<li><p><strong>ylim</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Tuple containing the y-axis limits.</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – Title of the axis.</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em>) – Label for the x-axis.</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em>) – Label for the y-axis.</p></li>
+<li><p><strong>xticks</strong> (<em>array-like</em>) – Positions of the x-axis ticks.</p></li>
+<li><p><strong>xticklabels</strong> (<em>array-like</em>) – Labels for the x-axis ticks.</p></li>
+<li><p><strong>yticks</strong> (<em>array-like</em>) – Positions of the y-axis ticks.</p></li>
+<li><p><strong>yticklabels</strong> (<em>array-like</em>) – Labels for the y-axis ticks.</p></li>
+<li><p><strong>legend</strong> (<em>bool</em>) – Whether to display a legend on the axis.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.process_cmd_queue">
+<span class="sig-name descname"><span class="pre">process_cmd_queue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.process_cmd_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.process_cmd_queue" title="Link to this definition"></a></dt>
+<dd><p>Process commands in the command queue.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.process_data_queue">
+<span class="sig-name descname"><span class="pre">process_data_queue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.process_data_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.process_data_queue" title="Link to this definition"></a></dt>
+<dd><p>Process data in the data queue.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.process_events">
+<span class="sig-name descname"><span class="pre">process_events</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.process_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.process_events" title="Link to this definition"></a></dt>
+<dd><p>Process GUI events.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.show" title="Link to this definition"></a></dt>
+<dd><p>Show the plot.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.update_bar_plot">
+<span class="sig-name descname"><span class="pre">update_bar_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">matplotlib.container.BarContainer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.update_bar_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.update_bar_plot" title="Link to this definition"></a></dt>
+<dd><p>Update a bar plot with new data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist</strong> (<em>matplotlib.container.BarContainer</em>) – Bar plot artist.</p></li>
+<li><p><strong>val</strong> (<em>array-like</em>) – New heights for the bars.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.update_figures">
+<span class="sig-name descname"><span class="pre">update_figures</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.update_figures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.update_figures" title="Link to this definition"></a></dt>
+<dd><p>Update figures with new data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.update_image_plot">
+<span class="sig-name descname"><span class="pre">update_image_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">matplotlib.image.AxesImage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.update_image_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.update_image_plot" title="Link to this definition"></a></dt>
+<dd><p>Update an image plot with new data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist</strong> (<em>matplotlib.image.AxesImage</em>) – Image plot artist.</p></li>
+<li><p><strong>val</strong> (<em>array-like</em>) – New image data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.update_line_plot">
+<span class="sig-name descname"><span class="pre">update_line_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">matplotlib.lines.Line2D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.update_line_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.update_line_plot" title="Link to this definition"></a></dt>
+<dd><p>Update a line plot with new data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist</strong> (<em>matplotlib.lines.Line2D</em>) – Line plot artist.</p></li>
+<li><p><strong>val</strong> (<em>float</em>) – New value for the plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter.Plotter.update_scatter_plot">
+<span class="sig-name descname"><span class="pre">update_scatter_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">matplotlib.collections.PathCollection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter.html#Plotter.update_scatter_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter.Plotter.update_scatter_plot" title="Link to this definition"></a></dt>
+<dd><p>Update a scatter plot with new data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist</strong> (<em>matplotlib.collections.PathCollection</em>) – Scatter plot artist.</p></li>
+<li><p><strong>val</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – New x, y values for the plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="plotter-manager">
+<h2>Plotter Manager<a class="headerlink" href="#plotter-manager" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">PlotterManager</span></code> class is responsible for managing the plotting process,
+including the creation, update, and termination of plots. It communicates with
+a separate plotting process to enable real-time data visualization.
+The user should provide <code class="docutils literal notranslate"><span class="pre">Plotter</span></code> instance if the APIs for creating plots
+need to be used, otherwise the instance should be from subclass of <code class="docutils literal notranslate"><span class="pre">PlotterBase</span></code>.</p>
+<dl class="py class" id="module-pydevdtk.plotting.plotter_manager">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydevdtk.plotting.plotter_manager.</span></span><span class="sig-name descname"><span class="pre">PlotterManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plotter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pydevdtk.plotting.plotter.Plotter" title="pydevdtk.plotting.plotter.Plotter"><span class="pre">Plotter</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pydevdtk.plotting.plotter_base.Plotter" title="pydevdtk.plotting.plotter_base.Plotter"><span class="pre">Plotter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager" title="Link to this definition"></a></dt>
+<dd><p>Manager for the plotter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>plotter</strong> (<a class="reference internal" href="#pydevdtk.plotting.plotter_base.Plotter" title="pydevdtk.plotting.plotter_base.Plotter"><em>Plotter</em></a><em> or </em><em>PlotterBase</em>) – The plotter object that will be used to create figures and artists.</p></li>
+<li><p><strong>fps</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – The frames per second at which the plotter updates the figures.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.add_data">
+<span class="sig-name descname"><span class="pre">add_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.add_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.add_data" title="Link to this definition"></a></dt>
+<dd><p>Add data to the plotter’s data queue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em><em>[</em><em>str</em><em>]</em>) – Dictionary of data, where the keys are the artist ids.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.close" title="Link to this definition"></a></dt>
+<dd><p>Close the plotter window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.create_axis">
+<span class="sig-name descname"><span class="pre">create_axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i_row</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i_col</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.create_axis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_axis" title="Link to this definition"></a></dt>
+<dd><p>Create an axis with the given ID, figure ID, and position in the grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axis_id</strong> (<em>str</em>) – The ID of the axis.</p></li>
+<li><p><strong>fig_id</strong> (<em>str</em>) – The ID of the figure.</p></li>
+<li><p><strong>i_row</strong> (<em>int</em>) – The row index of the axis in the grid.</p></li>
+<li><p><strong>i_col</strong> (<em>int</em>) – The column index of the axis in the grid.</p></li>
+<li><p><strong>num_rows</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of rows in the grid. Default is 1.</p></li>
+<li><p><strong>num_cols</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of columns in the grid. Default is 1.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.create_bar_plot">
+<span class="sig-name descname"><span class="pre">create_bar_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_bars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.create_bar_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_bar_plot" title="Link to this definition"></a></dt>
+<dd><p>Create a bar plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist_id</strong> (<em>str</em>) – The ID of the artist.</p></li>
+<li><p><strong>axis_id</strong> (<em>str</em>) – The ID of the axis.</p></li>
+<li><p><strong>num_bars</strong> (<em>int</em>) – The number of bars in the bar plot.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to pass to the bar method.
+Look-up the docstring for <cite>matplotlib.Axes.bar</cite> method.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.create_figure">
+<span class="sig-name descname"><span class="pre">create_figure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.create_figure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_figure" title="Link to this definition"></a></dt>
+<dd><p>Create a figure with the given ID, number of rows and columns, and
+keyword arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fig_id</strong> (<em>str</em>) – The ID of the figure.</p></li>
+<li><p><strong>grid_rows</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of rows in the grid. Default is 1.</p></li>
+<li><p><strong>grid_cols</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of columns in the grid. Default is 1.</p></li>
+<li><p><strong>kwargs</strong> – Keyword arguments to pass to the figure constructor.
+Look-up the docstring for <cite>matplotlib.figure.Figure</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.create_image_plot">
+<span class="sig-name descname"><span class="pre">create_image_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.create_image_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_image_plot" title="Link to this definition"></a></dt>
+<dd><p>Create an image plot with the given ID, axis ID, image shape, and
+keyword arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist_id</strong> (<em>str</em>) – The ID of the artist.</p></li>
+<li><p><strong>axis_id</strong> (<em>str</em>) – The ID of the axis.</p></li>
+<li><p><strong>img_shape</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – The shape of the image.</p></li>
+<li><p><strong>cbar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to include colorbar, by default False.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to pass to the imshow method.
+Look-up the docstring for <cite>matplotlib.Axes.imshow</cite> method.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.create_line_plot">
+<span class="sig-name descname"><span class="pre">create_line_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.create_line_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_line_plot" title="Link to this definition"></a></dt>
+<dd><p>Create a line plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist_id</strong> (<em>str</em>) – The ID of the artist.</p></li>
+<li><p><strong>axis_id</strong> (<em>str</em>) – The ID of the axis.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – The number of points on the line plot.</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to the plot method.
+Look-up the docstring for <cite>matplotlib.Axes.plot</cite> method.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.create_scatter_plot">
+<span class="sig-name descname"><span class="pre">create_scatter_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.create_scatter_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.create_scatter_plot" title="Link to this definition"></a></dt>
+<dd><p>Create a scatter plot with the given ID, axis ID, number of points, and
+keyword arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist_id</strong> (<em>str</em>) – The ID of the artist.</p></li>
+<li><p><strong>axis_id</strong> (<em>str</em>) – The ID of the axis.</p></li>
+<li><p><strong>num_points</strong> (<em>int</em>) – The number of points in the scatter plot.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to pass to the scatter method.
+Look-up the docstring for <cite>matplotlib.Axes.scatter</cite> method.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.is_alive">
+<span class="sig-name descname"><span class="pre">is_alive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.is_alive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.is_alive" title="Link to this definition"></a></dt>
+<dd><p>Check if the plotter process is alive.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.is_shown">
+<span class="sig-name descname"><span class="pre">is_shown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.is_shown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.is_shown" title="Link to this definition"></a></dt>
+<dd><p>Check if the plotter window is shown.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.modify_axis">
+<span class="sig-name descname"><span class="pre">modify_axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xticks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xticklabels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yticks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yticklabels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.modify_axis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.modify_axis" title="Link to this definition"></a></dt>
+<dd><p>Modify the axis with the given ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axis_id</strong> (<em>str</em>) – The ID of the axis.</p></li>
+<li><p><strong>xlim</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>optional</em>) – The x-axis limits. Default is None.</p></li>
+<li><p><strong>ylim</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>optional</em>) – The y-axis limits. Default is None.</p></li>
+<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – The title of the axis. Default is None.</p></li>
+<li><p><strong>xlabel</strong> (<em>str</em><em>, </em><em>optional</em>) – The label for the x-axis. Default is None.</p></li>
+<li><p><strong>ylabel</strong> (<em>str</em><em>, </em><em>optional</em>) – The label for the y-axis. Default is None.</p></li>
+<li><p><strong>xticks</strong> (<em>List</em><em>[</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – The locations of the tick marks on the x-axis. Default is None.</p></li>
+<li><p><strong>xticklabels</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The labels for the tick marks on the x-axis. Default is None.</p></li>
+<li><p><strong>yticks</strong> (<em>List</em><em>[</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – The locations of the tick marks on the y-axis. Default is None.</p></li>
+<li><p><strong>yticklabels</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The labels for the tick marks on the y-axis. Default is None.</p></li>
+<li><p><strong>legend</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to show the legend. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.show" title="Link to this definition"></a></dt>
+<dd><p>Show the plotter window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydevdtk.plotting.plotter_manager.PlotterManager.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydevdtk/plotting/plotter_manager.html#PlotterManager.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydevdtk.plotting.plotter_manager.PlotterManager.stop" title="Link to this definition"></a></dt>
+<dd><p>Stop the plotter process.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="coms.html" class="btn btn-neutral float-left" title="Communication Protocols" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Bojan Sofronievski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.1.1
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="../v0.1.0/index.html">v0.1.0</a></dd>
+      <dd><a href="plotting.html">v0.1.1</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="../main/plotting.html">main</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

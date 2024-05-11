@@ -1,0 +1,27 @@
+pydevdtk.coms.ble.BleStatus
+===========================
+
+.. currentmodule:: pydevdtk.coms.ble
+
+.. autoclass:: BleStatus
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BleStatus.Connecting
+      ~BleStatus.Connected
+      ~BleStatus.Disconnecting
+   
+   

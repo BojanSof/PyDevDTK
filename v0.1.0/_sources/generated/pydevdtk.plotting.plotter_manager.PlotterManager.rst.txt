@@ -1,0 +1,38 @@
+pydevdtk.plotting.plotter\_manager.PlotterManager
+=================================================
+
+.. currentmodule:: pydevdtk.plotting.plotter_manager
+
+.. autoclass:: PlotterManager
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PlotterManager.__init__
+      ~PlotterManager.add_data
+      ~PlotterManager.close
+      ~PlotterManager.create_axis
+      ~PlotterManager.create_bar_plot
+      ~PlotterManager.create_figure
+      ~PlotterManager.create_image_plot
+      ~PlotterManager.create_line_plot
+      ~PlotterManager.create_scatter_plot
+      ~PlotterManager.is_alive
+      ~PlotterManager.is_shown
+      ~PlotterManager.modify_axis
+      ~PlotterManager.show
+      ~PlotterManager.stop
+   
+   
+
+   
+   
+   

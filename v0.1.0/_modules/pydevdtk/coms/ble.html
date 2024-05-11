@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pydevdtk.coms.ble &mdash; PyDevDTK 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            PyDevDTK
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyDevDTK</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pydevdtk.coms.ble</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pydevdtk.coms.ble</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+
+<span class="kn">from</span> <span class="nn">bleak</span> <span class="kn">import</span> <span class="n">BleakScanner</span><span class="p">,</span> <span class="n">BleakClient</span>
+<span class="kn">from</span> <span class="nn">bleak.backends.device</span> <span class="kn">import</span> <span class="n">BLEDevice</span>
+<span class="kn">from</span> <span class="nn">bleak.backends.scanner</span> <span class="kn">import</span> <span class="n">AdvertisementData</span>
+
+
+<div class="viewcode-block" id="BleStatus">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.BleStatus.html#pydevdtk.coms.ble.BleStatus">[docs]</a>
+<span class="k">class</span> <span class="nc">BleStatus</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Status of the BLE connection.&quot;&quot;&quot;</span>
+
+    <span class="n">Connecting</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">auto</span><span class="p">()</span>
+    <span class="n">Connected</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">auto</span><span class="p">()</span>
+    <span class="n">Disconnecting</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">auto</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="BleDevice">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice">[docs]</a>
+<span class="k">class</span> <span class="nc">BleDevice</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;BLE device advertisement data and connection related objects&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BleDevice.__init__">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.BleDevice.html#pydevdtk.coms.ble.BleDevice.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">rssi</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">uuids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">manufacturer_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new instance of the BleDevice class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str or None</span>
+<span class="sd">            The name of the device. Can be None.</span>
+<span class="sd">        address : str</span>
+<span class="sd">            The address of the device.</span>
+<span class="sd">        rssi : int</span>
+<span class="sd">            The received signal strength indicator (RSSI) of the device.</span>
+<span class="sd">        uuids : list of str</span>
+<span class="sd">            A list of UUIDs associated with the device.</span>
+<span class="sd">        manufacturer_data : dict of int to bytes</span>
+<span class="sd">            A dictionary containing manufacturer-specific data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rssi</span> <span class="o">=</span> <span class="n">rssi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuids</span> <span class="o">=</span> <span class="n">uuids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manufacturer_data</span> <span class="o">=</span> <span class="n">manufacturer_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_device_hndl</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="BleCharacteristic">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.BleCharacteristic.html#pydevdtk.coms.ble.BleCharacteristic">[docs]</a>
+<span class="k">class</span> <span class="nc">BleCharacteristic</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;BLE characteristic description&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BleCharacteristic.__init__">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.BleCharacteristic.html#pydevdtk.coms.ble.BleCharacteristic.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new instance of the BleCharacteristic class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        uuid : str</span>
+<span class="sd">            The UUID of the characteristic.</span>
+<span class="sd">        properties : list of str</span>
+<span class="sd">            The properties of the characteristic, which can be one or more of:</span>
+<span class="sd">            &#39;read&#39;, &#39;write&#39;, &#39;write-without-response&#39;, &#39;notify&#39; or &#39;indicate&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">properties</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="BleService">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.BleService.html#pydevdtk.coms.ble.BleService">[docs]</a>
+<span class="k">class</span> <span class="nc">BleService</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;BLE service description&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BleService.__init__">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.BleService.html#pydevdtk.coms.ble.BleService.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">characteristics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BleCharacteristic</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new instance of the BleService class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        uuid : str</span>
+<span class="sd">            The UUID of the service.</span>
+<span class="sd">        characteristics : list of BleCharacteristic</span>
+<span class="sd">            A list of BleCharacteristic objects representing the</span>
+<span class="sd">            characteristics of the service.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">characteristics</span> <span class="o">=</span> <span class="n">characteristics</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Ble">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble">[docs]</a>
+<span class="k">class</span> <span class="nc">Ble</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class that allows to utilize the BLE module of the device,</span>
+<span class="sd">    including scanning for BLE devices, connecting to BLE devices,</span>
+<span class="sd">    and data operations including read, write and notify.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Ble.__init__">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new instance allowing to utilize the BLE module of the</span>
+<span class="sd">        device, including scanning for BLE devices, connecting to BLE devices,</span>
+<span class="sd">        and data operations including read, write and notify.</span>
+
+<span class="sd">        Runs asyncio event loop in a separate thread which handles all BLE</span>
+<span class="sd">        events.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">found_devices</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BleDevice</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_device</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">BleDevice</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanning</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scan_stop_event</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status_devices</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BleStatus</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disconnect_events</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connected_devices</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BleDevice</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_loop_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
+            <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_asyncloop</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_loop_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">dev</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected_devices</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span><span class="o">.</span><span class="n">call_soon_threadsafe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_loop_thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Ble.start_scan">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.start_scan">[docs]</a>
+    <span class="k">def</span> <span class="nf">start_scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on_device</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">BleDevice</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Start scanning for Bluetooth Low Energy (BLE) devices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        on_device : Callable[[BleDevice], None] or None, optional</span>
+<span class="sd">            Optional callback function to be called when a BLE device is found.</span>
+<span class="sd">            The callback function should take a `BleDevice` object as its</span>
+<span class="sd">            parameter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">found_devices</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># clear previously found devices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_device</span> <span class="o">=</span> <span class="n">on_device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scan_stop_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bluetooth_scan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scan_stop_event</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanning</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Ble.stop_scan">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.stop_scan">[docs]</a>
+    <span class="k">def</span> <span class="nf">stop_scan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stops the ongoing Bluetooth Low Energy (BLE) scan if it is currently</span>
+<span class="sd">        running.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanning</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span><span class="o">.</span><span class="n">call_soon_threadsafe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scan_stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scanning</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Ble.is_scanning">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.is_scanning">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_scanning</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the scanning status.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            The scanning status (True if scanning, False otherwise).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scanning</span></div>
+
+
+<div class="viewcode-block" id="Ble.get_found_devices">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.get_found_devices">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_found_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BleDevice</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of all the found devices during scanning.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of BleDevice</span>
+<span class="sd">            A list of BleDevice objects representing the found devices.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">found_devices</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Ble.connect">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.connect">[docs]</a>
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dev</span><span class="p">:</span> <span class="n">BleDevice</span><span class="p">,</span>
+        <span class="n">on_connect</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">on_disconnect</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A method to connect to a BLE device if it is not already connected to</span>
+<span class="sd">        it.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dev : BleDevice</span>
+<span class="sd">            The BLE device to connect to.</span>
+<span class="sd">        on_connect : Callable[[], None] or None, optional</span>
+<span class="sd">            Callback for when the connection is established. Defaults to None.</span>
+<span class="sd">        on_disconnect : Callable[[], None] or None, optional</span>
+<span class="sd">            Callback for when the connection is terminated. Defaults to None.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">(</span><span class="n">dev</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">on_connect</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span> <span class="o">=</span> <span class="n">on_connect</span>
+            <span class="k">if</span> <span class="n">on_disconnect</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span> <span class="o">=</span> <span class="n">on_disconnect</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disconnect_events</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status_devices</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span> <span class="o">=</span> <span class="n">BleStatus</span><span class="o">.</span><span class="n">Connecting</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_bluetooth_connect</span><span class="p">(</span>
+                    <span class="n">dev</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">disconnect_events</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span>
+                <span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span><span class="p">,</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Ble.disconnect">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.disconnect">[docs]</a>
+    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="n">BleDevice</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Disconnects a BLE device if it is currently connected to it.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dev : BleDevice</span>
+<span class="sd">            The BLE device to disconnect.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">(</span><span class="n">dev</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status_devices</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span> <span class="o">=</span> <span class="n">BleStatus</span><span class="o">.</span><span class="n">Disconnecting</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span><span class="o">.</span><span class="n">call_soon_threadsafe</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">disconnect_events</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span><span class="o">.</span><span class="n">set</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Ble.is_connected">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.is_connected">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_connected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="n">BleDevice</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if a given BLE device is connected.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dev : BleDevice</span>
+<span class="sd">            The BLE device to check.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the device is connected, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">dev</span><span class="o">.</span><span class="n">address</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected_devices</span></div>
+
+
+<div class="viewcode-block" id="Ble.get_connected_devices">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.get_connected_devices">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_connected_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BleDevice</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of all the connected devices.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of BleDevice</span>
+<span class="sd">            A list of BleDevice objects representing the connected devices.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connected_devices</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Ble.get_status">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.get_status">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="n">BleDevice</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BleStatus</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the status of the connection for a given BLE device.</span>
+<span class="sd">        Useful to check if the device is in process of establishing</span>
+<span class="sd">        connection, disconnecting or it is already connected.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dev : BleDevice</span>
+<span class="sd">            The BLE device for which to retrieve the status.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        BleStatus or None</span>
+<span class="sd">            The connection status of the device.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dev</span><span class="o">.</span><span class="n">address</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_devices</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_devices</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Ble.get_services_and_characteristics">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.get_services_and_characteristics">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_services_and_characteristics</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="n">BleDevice</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BleService</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the list of services and characteristics of a given BLE</span>
+<span class="sd">        device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dev : BleDevice</span>
+<span class="sd">            The BLE device for which to retrieve the services and</span>
+<span class="sd">            characteristics.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of BleService</span>
+<span class="sd">            A list of BleService objects representing the services and</span>
+<span class="sd">            characteristics of the device.</span>
+<span class="sd">            Each BleService object contains the UUID of the service and a list</span>
+<span class="sd">            of BleCharacteristic objects representing the characteristics of</span>
+<span class="sd">            the service.</span>
+<span class="sd">            Returns None if the device is not connected.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">(</span><span class="n">dev</span><span class="p">):</span>
+            <span class="n">services_collection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">services_collection</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected_devices</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span><span class="o">.</span><span class="n">_client</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">service</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">service_characteristics</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">characteristic</span> <span class="ow">in</span> <span class="n">service</span><span class="o">.</span><span class="n">characteristics</span><span class="p">:</span>
+                    <span class="n">ble_characteristic</span> <span class="o">=</span> <span class="n">BleCharacteristic</span><span class="p">(</span>
+                        <span class="n">uuid</span><span class="o">=</span><span class="n">characteristic</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+                        <span class="n">properties</span><span class="o">=</span><span class="n">characteristic</span><span class="o">.</span><span class="n">properties</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">service_characteristics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ble_characteristic</span><span class="p">)</span>
+                <span class="n">ble_service</span> <span class="o">=</span> <span class="n">BleService</span><span class="p">(</span>
+                    <span class="n">uuid</span><span class="o">=</span><span class="n">service</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="n">characteristics</span><span class="o">=</span><span class="n">service_characteristics</span>
+                <span class="p">)</span>
+                <span class="n">services_collection</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ble_service</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">services_collection</span></div>
+
+
+<div class="viewcode-block" id="Ble.read_characteristic">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.read_characteristic">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_characteristic</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="n">BleDevice</span><span class="p">,</span> <span class="n">char_uuid</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytearray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reads the value of a characteristic from a BLE device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dev : BleDevice</span>
+<span class="sd">            The BLE device to read from.</span>
+<span class="sd">        char_uuid : str</span>
+<span class="sd">            The UUID of the characteristic to read.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bytearray or None</span>
+<span class="sd">            The value of the characteristic if it exists and is readable,</span>
+<span class="sd">            otherwise None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">(</span><span class="n">dev</span><span class="p">):</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected_devices</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span><span class="o">.</span><span class="n">_client</span>
+            <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">characteristics</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="n">chars_uuids</span> <span class="o">=</span> <span class="p">[</span><span class="n">char</span><span class="o">.</span><span class="n">uuid</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">]</span>
+            <span class="n">chars_properties</span> <span class="o">=</span> <span class="p">[</span><span class="n">char</span><span class="o">.</span><span class="n">properties</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">char_uuid</span> <span class="ow">in</span> <span class="n">chars_uuids</span><span class="p">:</span>
+                <span class="n">i_char</span> <span class="o">=</span> <span class="n">chars_uuids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">char_uuid</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;read&quot;</span> <span class="ow">in</span> <span class="n">chars_properties</span><span class="p">[</span><span class="n">i_char</span><span class="p">]:</span>
+                    <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_bluetooth_read</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">char_uuid</span><span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Ble.write_characteristic">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.write_characteristic">[docs]</a>
+    <span class="k">def</span> <span class="nf">write_characteristic</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dev</span><span class="p">:</span> <span class="n">BleDevice</span><span class="p">,</span>
+        <span class="n">char_uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="nb">bytearray</span><span class="p">,</span>
+        <span class="n">response</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytearray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes data to a characteristic of a BLE device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dev : BleDevice</span>
+<span class="sd">            The BLE device to write to.</span>
+<span class="sd">        char_uuid : str</span>
+<span class="sd">            The UUID of the characteristic to write to.</span>
+<span class="sd">        data : bytes or bytearray</span>
+<span class="sd">            The data to write.</span>
+<span class="sd">        response : bool</span>
+<span class="sd">            Whether to expect a response from the device.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bytearray or None</span>
+<span class="sd">            The result of the write operation, or None if the write failed.</span>
+
+<span class="sd">        This function checks if the device is connected and if the</span>
+<span class="sd">        characteristic exists and is writable. If so, it writes the data to</span>
+<span class="sd">        the characteristic. The result of the write operation is returned.</span>
+<span class="sd">        If the device is not connected or the characteristic does not exist or</span>
+<span class="sd">        is not writable, None is returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">(</span><span class="n">dev</span><span class="p">):</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected_devices</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span><span class="o">.</span><span class="n">_client</span>
+            <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">characteristics</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="n">chars_uuids</span> <span class="o">=</span> <span class="p">[</span><span class="n">char</span><span class="o">.</span><span class="n">uuid</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">]</span>
+            <span class="n">chars_properties</span> <span class="o">=</span> <span class="p">[</span><span class="n">char</span><span class="o">.</span><span class="n">properties</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">char_uuid</span> <span class="ow">in</span> <span class="n">chars_uuids</span><span class="p">:</span>
+                <span class="n">i_char</span> <span class="o">=</span> <span class="n">chars_uuids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">char_uuid</span><span class="p">)</span>
+                <span class="n">prop</span> <span class="o">=</span> <span class="s2">&quot;write&quot;</span> <span class="k">if</span> <span class="n">response</span> <span class="k">else</span> <span class="s2">&quot;write-without-response&quot;</span>
+                <span class="k">if</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">chars_properties</span><span class="p">[</span><span class="n">i_char</span><span class="p">]:</span>
+                    <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_bluetooth_write</span><span class="p">(</span>
+                            <span class="n">client</span><span class="p">,</span> <span class="n">char_uuid</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">response</span>
+                        <span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Ble.start_notifications">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.start_notifications">[docs]</a>
+    <span class="k">def</span> <span class="nf">start_notifications</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dev</span><span class="p">:</span> <span class="n">BleDevice</span><span class="p">,</span>
+        <span class="n">char_uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">on_data</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bytes</span> <span class="o">|</span> <span class="nb">bytearray</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function to start notifications for a specific characteristic of a</span>
+<span class="sd">        BLE device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dev : BleDevice</span>
+<span class="sd">            The BLE device for which notifications are to be started.</span>
+<span class="sd">        char_uuid : str</span>
+<span class="sd">            The UUID of the characteristic for which notifications are to be</span>
+<span class="sd">            started.</span>
+<span class="sd">        on_data : Callable[[bytes or bytearray], None]</span>
+<span class="sd">            The callback function to handle the received notification data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if notifications were successfully started, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">(</span><span class="n">dev</span><span class="p">):</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected_devices</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span><span class="o">.</span><span class="n">_client</span>
+            <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">characteristics</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="n">chars_uuids</span> <span class="o">=</span> <span class="p">[</span><span class="n">char</span><span class="o">.</span><span class="n">uuid</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">]</span>
+            <span class="n">chars_properties</span> <span class="o">=</span> <span class="p">[</span><span class="n">char</span><span class="o">.</span><span class="n">properties</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">char_uuid</span> <span class="ow">in</span> <span class="n">chars_uuids</span><span class="p">:</span>
+                <span class="n">i_char</span> <span class="o">=</span> <span class="n">chars_uuids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">char_uuid</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;notify&quot;</span> <span class="ow">in</span> <span class="n">chars_properties</span><span class="p">[</span><span class="n">i_char</span><span class="p">]:</span>
+                    <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_bluetooth_start_notify</span><span class="p">(</span>
+                            <span class="n">client</span><span class="p">,</span> <span class="n">char_uuid</span><span class="p">,</span> <span class="n">on_data</span>
+                        <span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Ble.stop_notifications">
+<a class="viewcode-back" href="../../../generated/pydevdtk.coms.ble.Ble.html#pydevdtk.coms.ble.Ble.stop_notifications">[docs]</a>
+    <span class="k">def</span> <span class="nf">stop_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dev</span><span class="p">:</span> <span class="n">BleDevice</span><span class="p">,</span> <span class="n">char_uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A function to stop notifications for a specific characteristic of a</span>
+<span class="sd">        BLE device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dev : BleDevice</span>
+<span class="sd">            The BLE device for which notifications are to be stopped.</span>
+<span class="sd">        char_uuid : str</span>
+<span class="sd">            The UUID of the characteristic for which notifications are to be</span>
+<span class="sd">            stopped.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if notifications were successfully stopped, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">(</span><span class="n">dev</span><span class="p">):</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected_devices</span><span class="p">[</span><span class="n">dev</span><span class="o">.</span><span class="n">address</span><span class="p">]</span><span class="o">.</span><span class="n">_client</span>
+            <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">characteristics</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="n">chars_uuids</span> <span class="o">=</span> <span class="p">[</span><span class="n">char</span><span class="o">.</span><span class="n">uuid</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">]</span>
+            <span class="n">chars_properties</span> <span class="o">=</span> <span class="p">[</span><span class="n">char</span><span class="o">.</span><span class="n">properties</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">char_uuid</span> <span class="ow">in</span> <span class="n">chars_uuids</span><span class="p">:</span>
+                <span class="n">i_char</span> <span class="o">=</span> <span class="n">chars_uuids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">char_uuid</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;notify&quot;</span> <span class="ow">in</span> <span class="n">chars_properties</span><span class="p">[</span><span class="n">i_char</span><span class="p">]:</span>
+                    <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_bluetooth_stop_notify</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">char_uuid</span><span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_bluetooth_scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stop_event</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">BleakScanner</span><span class="p">(</span>
+            <span class="n">detection_callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_detection_callback</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">await</span> <span class="n">stop_event</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_detection_callback</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">BLEDevice</span><span class="p">,</span> <span class="n">advertisement_data</span><span class="p">:</span> <span class="n">AdvertisementData</span>
+    <span class="p">):</span>
+        <span class="n">dev</span> <span class="o">=</span> <span class="n">BleDevice</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">advertisement_data</span><span class="o">.</span><span class="n">local_name</span><span class="p">,</span>
+            <span class="n">address</span><span class="o">=</span><span class="n">device</span><span class="o">.</span><span class="n">address</span><span class="p">,</span>
+            <span class="n">rssi</span><span class="o">=</span><span class="n">advertisement_data</span><span class="o">.</span><span class="n">rssi</span><span class="p">,</span>
+            <span class="n">uuids</span><span class="o">=</span><span class="n">advertisement_data</span><span class="o">.</span><span class="n">service_uuids</span><span class="p">,</span>
+            <span class="n">manufacturer_data</span><span class="o">=</span><span class="n">advertisement_data</span><span class="o">.</span><span class="n">manufacturer_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">dev</span><span class="o">.</span><span class="n">_device_hndl</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">found_devices</span><span class="p">[</span><span class="n">device</span><span class="o">.</span><span class="n">address</span><span class="p">]</span> <span class="o">=</span> <span class="n">dev</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_device</span><span class="p">(</span><span class="n">dev</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_bluetooth_connect</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">BleDevice</span><span class="p">,</span> <span class="n">disconnect_event</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span>
+    <span class="p">):</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">BleakClient</span><span class="p">(</span>
+            <span class="n">device</span><span class="o">.</span><span class="n">_device_hndl</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_callback</span><span class="p">,</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+            <span class="n">device</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connected_devices</span><span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">address</span><span class="p">]</span> <span class="o">=</span> <span class="n">device</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status_devices</span><span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">address</span><span class="p">]</span> <span class="o">=</span> <span class="n">BleStatus</span><span class="o">.</span><span class="n">Connected</span>
+            <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">address</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span><span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">address</span><span class="p">]()</span>
+            <span class="k">await</span> <span class="n">disconnect_event</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">disconnect_events</span><span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">address</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_disconnect_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">BleakClient</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">address</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">disconnect_events</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">disconnect_events</span><span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">address</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected_devices</span><span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">address</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">status_devices</span><span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">address</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">address</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_connect</span><span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">address</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">address</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span><span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">address</span><span class="p">]()</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_disconnect</span><span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">address</span><span class="p">]</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_bluetooth_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">BleakClient</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">read_gatt_char</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_bluetooth_write</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">:</span> <span class="n">BleakClient</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="nb">bytearray</span><span class="p">,</span>
+        <span class="n">response</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">write_gatt_char</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_bluetooth_start_notify</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">:</span> <span class="n">BleakClient</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">on_data</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bytes</span> <span class="o">|</span> <span class="nb">bytearray</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">start_notify</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">on_data</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_bluetooth_stop_notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">BleakClient</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">stop_notify</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_asyncloop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Bojan Sofronievski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.1.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Tags</dt>
+      <dd><a href="ble.html">v0.1.0</a></dd>
+      <dd><a href="../../../../v0.1.1/index.html">v0.1.1</a></dd>
+    </dl>
+    <dl>
+      <dt>Branches</dt>
+      <dd><a href="../../../../main/index.html">main</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+pydevdtk.coms.ble.BleDevice
+===========================
+
+.. currentmodule:: pydevdtk.coms.ble
+
+.. autoclass:: BleDevice
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BleDevice.__init__
+   
+   
+
+   
+   
+   

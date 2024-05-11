@@ -1,0 +1,29 @@
+pydevdtk.coms.serial.Serial
+===========================
+
+.. currentmodule:: pydevdtk.coms.serial
+
+.. autoclass:: Serial
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Serial.__init__
+      ~Serial.close
+      ~Serial.get_found_devices
+      ~Serial.is_open
+      ~Serial.open
+   
+   
+
+   
+   
+   
